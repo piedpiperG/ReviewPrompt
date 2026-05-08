@@ -27,4 +27,12 @@ describe('home page package positioning', () => {
     expect(enHome).toContain('Install ReviewPrompt into Codex / Claude Code');
     expect(enHome).toContain('No manual prompt copying');
   });
+
+  it('keeps the prompt package phrase together in the hero title', () => {
+    const zhHome = readProjectFile('src/pages/index.astro');
+    const enHome = readProjectFile('src/pages/en/index.astro');
+
+    expect(zhHome).toContain('<span class="whitespace-nowrap">Prompt 套餐</span>');
+    expect(enHome).toContain('<span class="whitespace-nowrap">prompt packages</span>');
+  });
 });
