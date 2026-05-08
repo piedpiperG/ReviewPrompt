@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reviewprompt.dev/schemas/skill.schema.json",
+  "title": "ReviewPrompt Skill",
+  "type": "object",
+  "required": ["slug", "title", "summary", "tools", "safetyLevel", "version", "skillPreview"],
+  "properties": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "title": { "type": "string", "minLength": 3 },
+    "summary": { "type": "string", "minLength": 20 },
+    "tools": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "safetyLevel": { "enum": ["L0", "L1", "L2", "L3"] },
+    "version": { "type": "string" },
+    "skillPreview": { "type": "string", "minLength": 40 }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,45 @@
+---
+import ResourceGrid from './ResourceGrid.astro';
+import { catalog } from '../lib/catalog';
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const workflow = catalog.workflows.find((item) => item.slug === slug);
+
+if (!workflow) {
+  throw new Error(`Unknown workflow slug: ${slug}`);
+}
+
+const prompts = catalog.prompts.filter((prompt) => workflow.recommendedPrompts.includes(prompt.slug));
+const skills = catalog.skills.filter((skill) => skill.slug === workflow.skillSlug);
+---
+
+<div class="rp-detail">
+  <section class="rp-detail__panel">
+    <h2>Workflow Goal</h2>
+    <p>{workflow.summary}</p>
+    <div class="rp-card__meta">
+      {[workflow.status, ...workflow.roles, ...workflow.tasks, ...workflow.stages].map((item) => (
+        <span class="rp-pill">{item}</span>
+      ))}
+    </div>
+  </section>
+
+  <section class="rp-detail__panel">
+    <h2>Steps</h2>
+    <ol class="rp-steps">
+      {workflow.steps.map((step) => <li>{step}</li>)}
+    </ol>
+  </section>
+
+  <section class="rp-detail__panel">
+    <h2>Expected Outputs</h2>
+    <ul>{workflow.outputArtifacts.map((artifact) => <li>{artifact}</li>)}</ul>
+  </section>
+
+  <ResourceGrid title="Recommended Prompts" resources={prompts} />
+  {skills.length > 0 && <ResourceGrid title="Available Skill" resources={skills} />}
+</div>

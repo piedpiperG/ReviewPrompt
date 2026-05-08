@@ -1,0 +1,22 @@
+---
+title: Review My Paper
+description: Start here when you are reviewing another paper.
+---
+
+import ResourceGrid from '../../../components/ResourceGrid.astro';
+import TaskRecommender from '../../../components/TaskRecommender.astro';
+import { catalog } from '../../../lib/catalog';
+
+<TaskRecommender />
+
+## Recommended Path
+
+1. Open the Full Paper Review Workflow.
+2. Copy the Full Structured Peer Review prompt or install the matching skill.
+3. Provide the manuscript text, abstract, method, experiments, and venue rubric if available.
+4. Run a second score calibration pass before finalizing the review.
+
+<ResourceGrid
+  title="Reviewer Resources"
+  resources={catalog.workflows.filter((item) => item.slug === 'full-paper-review').concat(catalog.prompts.filter((item) => item.slug === 'full-structured-peer-review'))}
+/>

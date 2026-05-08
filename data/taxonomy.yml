@@ -1,0 +1,36 @@
+roles:
+  - Reviewer
+  - Author
+  - Lab internal reviewer
+  - Area Chair
+  - Meta-reviewer
+
+tasks:
+  - Full paper review
+  - Novelty check
+  - Methodology critique
+  - Experiment critique
+  - Related work check
+  - Writing clarity
+  - Reproducibility check
+  - Ethics / safety review
+  - Rebuttal simulation
+  - Meta-review synthesis
+
+stages:
+  - Early draft
+  - Submission-ready
+  - Under review
+  - Rebuttal
+  - Camera-ready
+
+domains:
+  - General
+  - Machine Learning
+  - NLP
+  - Computer Vision
+  - Systems
+  - HCI
+  - Biology
+  - Medicine
+  - Social Science

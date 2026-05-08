@@ -1,0 +1,53 @@
+name: Submit a Prompt
+description: Propose a structured AI-assisted peer-review prompt.
+title: "[Prompt] "
+labels: ["submission", "prompt"]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Prompt title
+      description: A short, descriptive title.
+    validations:
+      required: true
+  - type: dropdown
+    id: task
+    attributes:
+      label: Primary task
+      options:
+        - Full paper review
+        - Methodology critique
+        - Experiment critique
+        - Related work check
+        - Reproducibility check
+        - Rebuttal simulation
+        - Meta-review synthesis
+        - Writing clarity
+    validations:
+      required: true
+  - type: dropdown
+    id: role
+    attributes:
+      label: Intended user role
+      options:
+        - Reviewer
+        - Author
+        - Lab internal reviewer
+        - Area Chair / Meta-reviewer
+    validations:
+      required: true
+  - type: textarea
+    id: prompt
+    attributes:
+      label: Prompt text
+      description: Include the full prompt and any placeholders.
+      render: markdown
+    validations:
+      required: true
+  - type: textarea
+    id: metadata
+    attributes:
+      label: Input, output, limits, and source
+      description: Describe expected input, output format, known limitations, license, and attribution.
+    validations:
+      required: true

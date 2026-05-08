@@ -1,0 +1,59 @@
+---
+interface Props {
+  text: string;
+  label?: string;
+  copiedLabel?: string;
+  variant?: 'primary' | 'secondary';
+}
+
+const {
+  text,
+  label = 'Copy',
+  copiedLabel = 'Copied',
+  variant = 'secondary',
+} = Astro.props;
+---
+
+<button
+  class:list={['rp-copy-button', variant]}
+  type="button"
+  data-copy-text={text}
+  data-copy-label={label}
+  data-copied-label={copiedLabel}
+>
+  {label}
+</button>
+
+<script>
+  const COPY_BINDING_KEY = '__reviewPromptCopyButtonsBound';
+  const copyState = window as Window & { __reviewPromptCopyButtonsBound?: boolean };
+
+  if (!copyState[COPY_BINDING_KEY]) {
+    copyState[COPY_BINDING_KEY] = true;
+
+    document.addEventListener('click', async (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const button = target.closest<HTMLButtonElement>('.rp-copy-button');
+      if (!(button instanceof HTMLButtonElement)) return;
+
+      const text = button.dataset.copyText ?? '';
+      const label = button.dataset.copyLabel ?? 'Copy';
+      const copiedLabel = button.dataset.copiedLabel ?? 'Copied';
+
+      try {
+        await navigator.clipboard.writeText(text);
+        button.textContent = copiedLabel;
+        window.setTimeout(() => {
+          button.textContent = label;
+        }, 1400);
+      } catch {
+        button.textContent = 'Copy failed';
+        window.setTimeout(() => {
+          button.textContent = label;
+        }, 1400);
+      }
+    });
+  }
+</script>

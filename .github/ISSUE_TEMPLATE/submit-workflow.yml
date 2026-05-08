@@ -1,0 +1,32 @@
+name: Submit a Workflow
+description: Propose a multi-step AI-assisted peer-review workflow.
+title: "[Workflow] "
+labels: ["submission", "workflow"]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Workflow title
+    validations:
+      required: true
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case
+      description: Who uses this workflow, at what paper stage, and for what task?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps
+      description: List the workflow steps in order.
+    validations:
+      required: true
+  - type: textarea
+    id: outputs
+    attributes:
+      label: Expected outputs
+      description: Describe artifacts such as review draft, checklist, rebuttal outline, or meta-review summary.
+    validations:
+      required: true

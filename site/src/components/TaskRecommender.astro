@@ -1,0 +1,161 @@
+---
+import { catalog } from '../lib/catalog';
+import type { PromptResource, SkillResource, WorkflowResource } from '../lib/catalog';
+import { pathWithBase } from '../lib/urls';
+
+const criteria = {
+  roles: ['Reviewer', 'Author', 'Lab internal reviewer', 'Area Chair'],
+  tasks: [
+    'Full paper review',
+    'Pre-submission self review',
+    'Methodology critique',
+    'Rebuttal simulation',
+    'Meta-review synthesis',
+    'Reproducibility check',
+  ],
+  stages: ['Early draft', 'Submission-ready', 'Under review', 'Rebuttal', 'Camera-ready'],
+  domains: ['General', 'Machine Learning', 'NLP', 'Computer Vision', 'Systems', 'HCI'],
+};
+type Resource = PromptResource | WorkflowResource | SkillResource;
+
+const withBaseHref = <T extends Resource>(resources: T[]) =>
+  resources.map((resource) => ({ ...resource, href: pathWithBase(resource.href) }));
+const clientCatalog = {
+  prompts: withBaseHref(catalog.prompts),
+  workflows: withBaseHref(catalog.workflows),
+  skills: withBaseHref(catalog.skills),
+};
+---
+
+<section class="rp-section rp-recommender" data-task-recommender data-catalog={JSON.stringify(clientCatalog)}>
+  <h2>Find the right review workflow</h2>
+  <p>Select the review situation and get a workflow, prompt, and skill recommendation.</p>
+
+  <div class="rp-recommender__controls">
+    <label>
+      Role
+      <select data-field="role">
+        {criteria.roles.map((item) => <option value={item}>{item}</option>)}
+      </select>
+    </label>
+    <label>
+      Task
+      <select data-field="task">
+        {criteria.tasks.map((item) => <option value={item}>{item}</option>)}
+      </select>
+    </label>
+    <label>
+      Stage
+      <select data-field="stage">
+        {criteria.stages.map((item) => <option value={item}>{item}</option>)}
+      </select>
+    </label>
+    <label>
+      Domain
+      <select data-field="domain">
+        {criteria.domains.map((item) => <option value={item}>{item}</option>)}
+      </select>
+    </label>
+  </div>
+
+  <div class="rp-recommender__result" data-result></div>
+</section>
+
+<script>
+  interface ClientResource {
+    slug: string;
+    title: string;
+    summary: string;
+    href: string;
+    roles: string[];
+    tasks: string[];
+    stages: string[];
+    domains: string[];
+    status: string;
+    featured?: boolean;
+    recommendedPrompts?: string[];
+    skillSlug?: string;
+  }
+
+  interface ClientCatalog {
+    prompts: ClientResource[];
+    workflows: ClientResource[];
+    skills: ClientResource[];
+  }
+
+  interface ClientCriteria {
+    role: string;
+    task: string;
+    stage: string;
+    domain: string;
+  }
+
+  const root = document.querySelector('[data-task-recommender]');
+
+  if (root instanceof HTMLElement) {
+    const catalog = JSON.parse(root.dataset.catalog ?? '{}') as ClientCatalog;
+    const fields = Array.from(root.querySelectorAll<HTMLSelectElement>('select'));
+    const result = root.querySelector('[data-result]');
+
+    const normalize = (value: string) => value.trim().toLowerCase();
+    const matchValue = (values: string[], target: string) =>
+      values.some((value) => normalize(value) === normalize(target));
+    const scoreResource = (resource: ClientResource, criteria: ClientCriteria) => {
+      let score = 0;
+      score += matchValue(resource.roles, criteria.role) ? 5 : 0;
+      score += matchValue(resource.tasks, criteria.task) ? 6 : 0;
+      score += matchValue(resource.stages, criteria.stage) ? 3 : 0;
+      score += matchValue(resource.domains, criteria.domain) ? 2 : 0;
+      score += resource.domains.includes('General') ? 1 : 0;
+      score += resource.status === 'curated' ? 1 : 0;
+      score += resource.featured ? 0.5 : 0;
+      return score;
+    };
+
+    const rank = (resources: ClientResource[], criteria: ClientCriteria) =>
+      resources
+        .map((resource) => ({ resource, score: scoreResource(resource, criteria) }))
+        .filter((item) => item.score > 0)
+        .sort((a, b) => b.score - a.score || a.resource.title.localeCompare(b.resource.title))
+        .map((item) => item.resource);
+
+    const readCriteria = (): ClientCriteria =>
+      Object.fromEntries(
+        fields.map((field) => [field.dataset.field, field.value]),
+      ) as unknown as ClientCriteria;
+
+    const render = () => {
+      if (!(result instanceof HTMLElement)) return;
+
+      const criteria = readCriteria();
+      const workflow = rank(catalog.workflows, criteria)[0];
+      const promptSlugs = new Set(workflow?.recommendedPrompts ?? []);
+      const prompt =
+        rank(catalog.prompts, criteria).find((item) => promptSlugs.has(item.slug)) ??
+        rank(catalog.prompts, criteria)[0];
+      const skill =
+        rank(catalog.skills, criteria).find((item) => item.slug === workflow?.skillSlug) ??
+        rank(catalog.skills, criteria)[0];
+
+      result.innerHTML = `
+        <div class="rp-grid">
+          ${workflow ? card('Workflow', workflow) : ''}
+          ${prompt ? card('Prompt', prompt) : ''}
+          ${skill ? card('Skill', skill) : ''}
+        </div>
+      `;
+    };
+
+    const card = (label: string, item: ClientResource) => `
+      <article class="rp-card">
+        <span class="rp-pill">${label}</span>
+        <h3><a href="${item.href}">${item.title}</a></h3>
+        <p>${item.summary}</p>
+        <div class="rp-card__actions"><a class="rp-button secondary" href="${item.href}">Open</a></div>
+      </article>
+    `;
+
+    fields.forEach((field) => field.addEventListener('change', render));
+    render();
+  }
+</script>

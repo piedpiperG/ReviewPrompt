@@ -1,0 +1,52 @@
+---
+import CopyButton from './CopyButton.astro';
+import type { PromptResource, SkillResource, WorkflowResource } from '../lib/catalog';
+import { pathWithBase } from '../lib/urls';
+
+type Resource = PromptResource | WorkflowResource | SkillResource;
+
+interface Props {
+  resource: Resource;
+}
+
+const { resource } = Astro.props;
+const primaryTags = [
+  resource.type,
+  resource.status,
+  ...resource.roles.slice(0, 2),
+  ...resource.tasks.slice(0, 1),
+];
+const copyText =
+  resource.type === 'prompt'
+    ? resource.promptText
+    : resource.type === 'skill'
+      ? resource.installCodex
+      : undefined;
+const href = pathWithBase(resource.href);
+---
+
+<article class="rp-card">
+  <div>
+    <h3><a href={href}>{resource.title}</a></h3>
+    <p>{resource.summary}</p>
+  </div>
+
+  <div class="rp-card__meta" aria-label="Resource metadata">
+    {primaryTags.map((tag) => <span class="rp-pill">{tag}</span>)}
+  </div>
+
+  <div class="rp-tags" aria-label="Tags">
+    {resource.tags.slice(0, 4).map((tag) => <span class="rp-pill">#{tag}</span>)}
+  </div>
+
+  <div class="rp-card__actions">
+    <a class="rp-button secondary" href={href}>View</a>
+    {copyText && (
+      <CopyButton
+        text={copyText}
+        label={resource.type === 'prompt' ? 'Copy Prompt' : 'Copy Install'}
+        copiedLabel="Copied"
+      />
+    )}
+  </div>
+</article>

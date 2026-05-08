@@ -1,0 +1,22 @@
+---
+import ResourceCard from './ResourceCard.astro';
+import type { PromptResource, SkillResource, WorkflowResource } from '../lib/catalog';
+
+type Resource = PromptResource | WorkflowResource | SkillResource;
+
+interface Props {
+  title?: string;
+  description?: string;
+  resources: Resource[];
+}
+
+const { title, description, resources } = Astro.props;
+---
+
+<section class="rp-section">
+  {title && <h2>{title}</h2>}
+  {description && <p>{description}</p>}
+  <div class="rp-grid">
+    {resources.map((resource) => <ResourceCard resource={resource} />)}
+  </div>
+</section>

@@ -1,0 +1,38 @@
+name: Submit a Skill
+description: Propose an installable agent skill for AI-assisted peer review.
+title: "[Skill] "
+labels: ["submission", "skill"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Skill name
+      description: Use kebab-case, for example full-paper-review.
+    validations:
+      required: true
+  - type: dropdown
+    id: tools
+    attributes:
+      label: Supported tools
+      multiple: true
+      options:
+        - Codex
+        - Claude Code
+        - Generic Agent Skill
+    validations:
+      required: true
+  - type: textarea
+    id: skill
+    attributes:
+      label: SKILL.md draft
+      description: Include description, workflow, output format, and guardrails.
+      render: markdown
+    validations:
+      required: true
+  - type: textarea
+    id: safety
+    attributes:
+      label: Safety notes
+      description: Does this skill include scripts, external calls, or confidential data handling risks?
+    validations:
+      required: true

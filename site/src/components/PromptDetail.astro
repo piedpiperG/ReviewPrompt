@@ -1,0 +1,67 @@
+---
+import CopyButton from './CopyButton.astro';
+import { catalog } from '../lib/catalog';
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const prompt = catalog.prompts.find((item) => item.slug === slug);
+
+if (!prompt) {
+  throw new Error(`Unknown prompt slug: ${slug}`);
+}
+---
+
+<div class="rp-detail">
+  <section class="rp-detail__panel">
+    <h2>Overview</h2>
+    <p>{prompt.summary}</p>
+    <div class="rp-card__meta">
+      {[prompt.status, ...prompt.roles, ...prompt.tasks.slice(0, 2), ...prompt.domains.slice(0, 3)].map((item) => (
+        <span class="rp-pill">{item}</span>
+      ))}
+    </div>
+  </section>
+
+  <section class="rp-detail__panel">
+    <h2>Use When</h2>
+    <ul>
+      {prompt.tasks.map((task) => <li>{task}</li>)}
+      {prompt.stages.map((stage) => <li>{stage}</li>)}
+    </ul>
+  </section>
+
+  <section class="rp-detail__panel">
+    <h2>Prompt</h2>
+    <CopyButton text={prompt.promptText} label="Copy Prompt" copiedLabel="Prompt Copied" />
+    <pre class="rp-code-block"><code>{prompt.promptText}</code></pre>
+  </section>
+
+  <section class="rp-detail__panel">
+    <h2>Input Format</h2>
+    <ul>{prompt.inputFormat.map((item) => <li>{item}</li>)}</ul>
+  </section>
+
+  <section class="rp-detail__panel">
+    <h2>Output Format</h2>
+    <ul>{prompt.outputFormat.map((item) => <li>{item}</li>)}</ul>
+  </section>
+
+  <section class="rp-detail__panel">
+    <h2>Known Limits</h2>
+    <ul>{prompt.limitations.map((item) => <li>{item}</li>)}</ul>
+  </section>
+
+  <section class="rp-detail__panel">
+    <h2>Metadata</h2>
+    <ul>
+      <li>Source: {prompt.source}</li>
+      <li>License: {prompt.license}</li>
+      <li>Contributor: {prompt.contributor}</li>
+      <li>Models: {prompt.modelCompatibility.join(', ')}</li>
+      <li>Skill ready: {prompt.hasSkill ? 'Yes' : 'No'}</li>
+    </ul>
+  </section>
+</div>

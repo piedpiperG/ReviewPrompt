@@ -1,0 +1,55 @@
+---
+import CopyButton from './CopyButton.astro';
+import { catalog } from '../lib/catalog';
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const skill = catalog.skills.find((item) => item.slug === slug);
+
+if (!skill) {
+  throw new Error(`Unknown skill slug: ${slug}`);
+}
+---
+
+<div class="rp-detail">
+  <section class="rp-detail__panel">
+    <h2>Skill Overview</h2>
+    <p>{skill.summary}</p>
+    <div class="rp-card__meta">
+      {[skill.status, skill.safetyLevel, ...skill.tools, ...skill.roles].map((item) => (
+        <span class="rp-pill">{item}</span>
+      ))}
+    </div>
+  </section>
+
+  <section class="rp-detail__panel">
+    <h2>Install for Codex</h2>
+    <CopyButton text={skill.installCodex} label="Copy Codex Install" copiedLabel="Copied" />
+    <pre class="rp-code-block"><code>{skill.installCodex}</code></pre>
+  </section>
+
+  <section class="rp-detail__panel">
+    <h2>Install for Claude Code</h2>
+    <CopyButton text={skill.installClaude} label="Copy Claude Install" copiedLabel="Copied" />
+    <pre class="rp-code-block"><code>{skill.installClaude}</code></pre>
+  </section>
+
+  <section class="rp-detail__panel">
+    <h2>SKILL.md Preview</h2>
+    <p>{skill.skillPreview}</p>
+  </section>
+
+  <section class="rp-detail__panel">
+    <h2>Metadata</h2>
+    <ul>
+      <li>Version: {skill.version}</li>
+      <li>License: {skill.license}</li>
+      <li>Scripts: {skill.hasScripts ? 'Included' : 'No scripts'}</li>
+      <li>Tasks: {skill.tasks.join(', ')}</li>
+      <li>Domains: {skill.domains.join(', ')}</li>
+    </ul>
+  </section>
+</div>
