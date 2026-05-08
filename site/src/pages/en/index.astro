@@ -1,55 +1,76 @@
 ---
-import ResourceGrid from '../../components/ResourceGrid.astro';
-import TaskRecommender from '../../components/TaskRecommender.astro';
-import SiteLayout from '../../layouts/SiteLayout.astro';
-import { catalog, getFeaturedResources } from '../../lib/catalog';
-import { pathWithBase } from '../../lib/urls';
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Features from '~/components/widgets/Features.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import ResourceGrid from '~/components/ResourceGrid.astro';
+import TaskRecommender from '~/components/TaskRecommender.astro';
+import { catalog, getFeaturedResources } from '~/lib/catalog';
+import { getPermalink } from '~/utils/permalinks';
 
 const featured = getFeaturedResources(catalog);
+const metadata = {
+  title: 'AI Review Commons',
+  description: 'Bilingual prompts for AI paper review.',
+};
 ---
 
-<SiteLayout title="AI Review Commons" description="Bilingual prompts for AI paper review." locale="en">
-  <section class="aw-hero">
-    <div class="aw-hero__bg" aria-hidden="true"></div>
-    <div class="aw-container aw-hero__grid">
-      <div class="aw-hero__copy">
-        <p class="aw-eyebrow">AI Review Commons</p>
-        <h1>A clean prompt tool for AI paper review.</h1>
-        <p class="aw-hero__lead">
-          The site currently focuses on AI papers. Choose author or reviewer, then choose full paper review or rebuttal,
-          and copy a ready prompt.
-        </p>
-        <div class="aw-actions">
-          <a class="rp-button" href={pathWithBase('/en/prompts/')}>Choose a Prompt</a>
-          <a class="rp-button secondary" href={pathWithBase('/en/contribute/')}>Submit a Prompt</a>
-        </div>
-      </div>
-      <div class="aw-hero__panel" aria-label="ReviewPrompt current scope">
-        <div class="aw-prompt-window">
-          <div class="aw-window-bar"><span></span><span></span><span></span></div>
-          <p class="aw-window-kicker">Prompt Scope</p>
-          <h2>2 roles × 2 tasks</h2>
-          <div class="aw-token-row">
-            <span>Author</span>
-            <span>Reviewer</span>
-            <span>Full paper</span>
-            <span>Rebuttal</span>
-            <span>AI</span>
-          </div>
-          <div class="aw-window-line"></div>
-          <div class="aw-window-line short"></div>
-          <div class="aw-window-line muted"></div>
-        </div>
-      </div>
-    </div>
-  </section>
+<Layout metadata={metadata} locale="en">
+  <Hero
+    tagline="AI Review Commons"
+    actions={[
+      { variant: 'primary', text: 'Choose a Prompt', href: getPermalink('/en/prompts'), icon: 'tabler:copy' },
+      { text: 'Submit a Prompt', href: getPermalink('/en/contribute') },
+    ]}
+  >
+    <Fragment slot="title">
+      A clean prompt tool for <span class="text-primary">AI paper review</span>
+    </Fragment>
 
-  <section class="aw-container aw-band">
-    <div class="aw-section-heading">
-      <p class="aw-eyebrow">Quick Start</p>
-      <h2>Find a copy-ready prompt in two steps</h2>
+    <Fragment slot="subtitle">
+      The site currently focuses on AI papers. Choose author or reviewer, then choose full paper review or rebuttal,
+      and copy a ready prompt.
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="mx-auto max-w-4xl rounded-3xl border border-teal-100 bg-white p-5 text-left shadow-2xl shadow-slate-200/80">
+        <div class="mb-5 flex gap-2">
+          <span class="h-3 w-3 rounded-full bg-rose-400"></span>
+          <span class="h-3 w-3 rounded-full bg-amber-400"></span>
+          <span class="h-3 w-3 rounded-full bg-emerald-400"></span>
+        </div>
+        <div class="grid gap-5 md:grid-cols-[0.8fr_1.2fr]">
+          <div class="rounded-2xl bg-slate-950 p-5 text-teal-50">
+            <p class="mb-3 text-sm font-bold uppercase text-teal-300">Prompt Scope</p>
+            <h2 class="m-0 text-3xl font-bold leading-tight text-white">2 roles × 2 tasks</h2>
+            <div class="mt-5 flex flex-wrap gap-2 text-sm">
+              <span class="rounded-full bg-white/10 px-3 py-1">Author</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">Reviewer</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">Full paper</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">Rebuttal</span>
+            </div>
+          </div>
+          <div class="space-y-3 rounded-2xl bg-teal-50 p-5">
+            <div class="h-4 w-4/5 rounded-full bg-teal-200"></div>
+            <div class="h-4 w-3/5 rounded-full bg-teal-100"></div>
+            <div class="mt-6 rounded-xl border border-teal-200 bg-white p-4">
+              <p class="m-0 text-sm font-semibold text-slate-500">Recommended Prompt</p>
+              <p class="m-0 mt-1 text-xl font-bold text-slate-950">Full Paper Review</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Fragment>
+  </Hero>
+
+  <section class="rp-shell">
+    <div class="mx-auto max-w-5xl px-4 md:px-6">
+      <div class="mb-8 text-center">
+        <p class="text-base font-bold uppercase text-secondary">Quick Start</p>
+        <h2 class="font-heading text-4xl font-bold tracking-tight text-slate-950 md:text-5xl">Find a copy-ready prompt in two steps</h2>
+      </div>
+      <TaskRecommender />
     </div>
-    <TaskRecommender />
   </section>
 
   <ResourceGrid
@@ -58,27 +79,32 @@ const featured = getFeaturedResources(catalog);
     resources={featured.prompts}
   />
 
-  <section class="aw-container aw-section">
-    <div class="aw-section-heading">
-      <p class="aw-eyebrow">Principles</p>
-      <h2>Keep the surface small and make prompts useful first</h2>
-    </div>
-    <div class="aw-feature-grid">
-      <article class="aw-feature-card">
-        <span>01</span>
-        <h3>Core path only</h3>
-        <p>The first screen is only about choosing a role, choosing a task, and copying prompts.</p>
-      </article>
-      <article class="aw-feature-card">
-        <span>02</span>
-        <h3>Evidence first</h3>
-        <p>Prompts ask the model to use provided paper evidence and avoid fabricated citations or venue rules.</p>
-      </article>
-      <article class="aw-feature-card">
-        <span>03</span>
-        <h3>Bilingual</h3>
-        <p>Chinese is the default version, with an English version using the same structure.</p>
-      </article>
-    </div>
-  </section>
-</SiteLayout>
+  <Features
+    tagline="Principles"
+    title="Keep the surface small and make prompts useful first"
+    columns={3}
+    items={[
+      {
+        title: 'Core path only',
+        description: 'The first screen is only about choosing a role, choosing a task, and copying prompts.',
+        icon: 'tabler:route',
+      },
+      {
+        title: 'Evidence first',
+        description: 'Prompts ask the model to use provided paper evidence and avoid fabricated citations or venue rules.',
+        icon: 'tabler:shield-check',
+      },
+      {
+        title: 'Bilingual',
+        description: 'Chinese is the default version, with an English version using the same structure.',
+        icon: 'tabler:language',
+      },
+    ]}
+  />
+
+  <CallToAction
+    title="Start by sharpening the two high-frequency tasks"
+    subtitle="More domains, tasks, and collaboration flows can come after the prompt experience is clear."
+    actions={[{ variant: 'primary', text: 'Open Prompt Library', href: getPermalink('/en/prompts'), icon: 'tabler:arrow-right' }]}
+  />
+</Layout>

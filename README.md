@@ -8,8 +8,9 @@ ReviewPrompt is not a prompt dump. The current website focuses on two clear prom
 
 The source requirement document is [`guide_basement.md`](guide_basement.md). The current implementation follows the first-version recommendation:
 
-- GitHub Pages + custom Astro pages.
-- Custom Astro pages backed by TypeScript prompt data.
+- GitHub Pages + AstroWind-based Astro website.
+- AstroWind layouts, widgets, UI components, Tailwind config, and integrations as the site base.
+- ReviewPrompt-specific pages backed by TypeScript prompt data.
 - Simplified prompt catalog for authors and reviewers.
 - Bilingual Chinese / English website, with Chinese as the default locale and English under `/en/`.
 - GitHub Issue Forms for community submissions.
@@ -49,12 +50,15 @@ npm --prefix site run build
 - Author and reviewer modes.
 - Full paper and rebuttal tasks.
 - Contribution entry.
+- Workflow and Skill pages are intentionally hidden for now.
 
 ## UI Reference
 
-The current custom Astro shell is visually adapted from AstroWind
-(`arthelokyo/astrowind`, MIT license) while keeping this repository's
-own prompt data, bilingual routing, and GitHub Pages deployment.
+The current site is based directly on AstroWind (`arthelokyo/astrowind`,
+MIT license): layout, header/footer widgets, hero/features/CTA widgets,
+UI primitives, Tailwind theme, Astro integrations, and utility structure
+are imported from the template. ReviewPrompt keeps its own prompt data,
+bilingual routing, simplified product scope, and GitHub Pages deployment.
 
 ## License
 

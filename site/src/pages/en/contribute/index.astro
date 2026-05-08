@@ -1,18 +1,22 @@
 ---
-import SiteLayout from '../../../layouts/SiteLayout.astro';
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+
+const metadata = {
+  title: 'Contribute',
+  description: 'Submit AI paper review prompts to ReviewPrompt.',
+};
 ---
 
-<SiteLayout title="Contribute" description="Submit AI paper review prompts to ReviewPrompt." locale="en">
-  <section class="aw-page-hero">
-    <div class="aw-container">
-      <p class="aw-eyebrow">Contribute</p>
-      <h1>Contribute</h1>
-      <p>ReviewPrompt currently accepts AI paper review prompt submissions only.</p>
-    </div>
-  </section>
+<Layout metadata={metadata} locale="en">
+  <HeroText
+    tagline="Contribute"
+    title="Contribute"
+    subtitle="ReviewPrompt currently accepts AI paper review prompt submissions only."
+  />
 
-  <section class="aw-container aw-section compact">
-    <div class="aw-content-card">
+  <section class="mx-auto max-w-4xl px-4 py-10 md:px-6">
+    <div class="prose prose-slate max-w-none rounded-3xl border border-gray-200 bg-white p-6 shadow-lg shadow-gray-200/50">
       <h2>What to Submit</h2>
       <ul>
         <li>Whether it supports full paper review or rebuttal.</li>
@@ -35,4 +39,4 @@ import SiteLayout from '../../../layouts/SiteLayout.astro';
       </ul>
     </div>
   </section>
-</SiteLayout>
+</Layout>

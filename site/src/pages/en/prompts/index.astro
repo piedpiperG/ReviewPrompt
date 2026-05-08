@@ -1,24 +1,28 @@
 ---
-import ResourceGrid from '../../../components/ResourceGrid.astro';
-import SiteLayout from '../../../layouts/SiteLayout.astro';
-import { catalog } from '../../../lib/catalog';
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import ResourceGrid from '~/components/ResourceGrid.astro';
+import { catalog } from '~/lib/catalog';
+
+const metadata = {
+  title: 'Prompt Library',
+  description: 'Only the full paper and rebuttal prompts are shown for now.',
+};
 ---
 
-<SiteLayout title="Prompt Library" description="Only the full paper and rebuttal prompts are shown for now." locale="en">
-  <section class="aw-page-hero">
-    <div class="aw-container">
-      <p class="aw-eyebrow">Prompt Library</p>
-      <h1>Prompt Library</h1>
-      <p>Choose a role and task, then copy the prompt. The current domain is fixed to artificial intelligence.</p>
-    </div>
-  </section>
+<Layout metadata={metadata} locale="en">
+  <HeroText
+    tagline="Prompt Library"
+    title="Prompt Library"
+    subtitle="Choose a role and task, then copy the prompt. The current domain is fixed to artificial intelligence."
+  />
 
   <ResourceGrid resources={catalog.prompts} />
 
-  <section class="aw-container aw-section compact">
-    <div class="aw-note">
-      <strong>Current Scope</strong>
-      <p>This page starts with two common actions: full paper review and rebuttal response.</p>
+  <section class="mx-auto max-w-5xl px-4 py-10 md:px-6">
+    <div class="rounded-3xl border border-teal-100 bg-teal-50 p-6">
+      <strong class="text-slate-950">Current Scope</strong>
+      <p class="mb-0 mt-2 text-muted">This page starts with two common actions: full paper review and rebuttal response.</p>
     </div>
   </section>
-</SiteLayout>
+</Layout>

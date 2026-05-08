@@ -1,54 +1,76 @@
 ---
-import ResourceGrid from '../components/ResourceGrid.astro';
-import TaskRecommender from '../components/TaskRecommender.astro';
-import SiteLayout from '../layouts/SiteLayout.astro';
-import { catalog, getFeaturedResources } from '../lib/catalog';
-import { pathWithBase } from '../lib/urls';
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Features from '~/components/widgets/Features.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import ResourceGrid from '~/components/ResourceGrid.astro';
+import TaskRecommender from '~/components/TaskRecommender.astro';
+import { catalog, getFeaturedResources } from '~/lib/catalog';
+import { getPermalink } from '~/utils/permalinks';
 
 const featured = getFeaturedResources(catalog);
+const metadata = {
+  title: 'AI Review Commons',
+  description: '面向人工智能论文审稿的双语提示词库。',
+};
 ---
 
-<SiteLayout title="AI Review Commons" description="面向人工智能论文审稿的双语提示词库。" locale="zh">
-  <section class="aw-hero">
-    <div class="aw-hero__bg" aria-hidden="true"></div>
-    <div class="aw-container aw-hero__grid">
-      <div class="aw-hero__copy">
-        <p class="aw-eyebrow">AI Review Commons</p>
-        <h1>把论文审稿提示词做成一个清晰好用的工具。</h1>
-        <p class="aw-hero__lead">
-          当前只服务人工智能论文场景。选择作者或审稿人，再选择完整论文或 Rebuttal，直接复制可用提示词。
-        </p>
-        <div class="aw-actions">
-          <a class="rp-button" href={pathWithBase('/prompts/')}>选择提示词</a>
-          <a class="rp-button secondary" href={pathWithBase('/contribute/')}>提交提示词</a>
-        </div>
-      </div>
-      <div class="aw-hero__panel" aria-label="ReviewPrompt 当前范围">
-        <div class="aw-prompt-window">
-          <div class="aw-window-bar"><span></span><span></span><span></span></div>
-          <p class="aw-window-kicker">Prompt Scope</p>
-          <h2>2 种身份 × 2 个任务</h2>
-          <div class="aw-token-row">
-            <span>作者</span>
-            <span>审稿人</span>
-            <span>完整论文</span>
-            <span>Rebuttal</span>
-            <span>人工智能</span>
-          </div>
-          <div class="aw-window-line"></div>
-          <div class="aw-window-line short"></div>
-          <div class="aw-window-line muted"></div>
-        </div>
-      </div>
-    </div>
-  </section>
+<Layout metadata={metadata} locale="zh">
+  <Hero
+    tagline="AI Review Commons"
+    actions={[
+      { variant: 'primary', text: '选择提示词', href: getPermalink('/prompts'), icon: 'tabler:copy' },
+      { text: '提交提示词', href: getPermalink('/contribute') },
+    ]}
+  >
+    <Fragment slot="title">
+      把论文审稿提示词做成
+      <span class="text-primary">清晰好用</span> 的工具
+    </Fragment>
 
-  <section class="aw-container aw-band">
-    <div class="aw-section-heading">
-      <p class="aw-eyebrow">快速选择</p>
-      <h2>两步找到可复制的提示词</h2>
+    <Fragment slot="subtitle">
+      当前只服务人工智能论文场景。选择作者或审稿人，再选择完整论文或 Rebuttal，直接复制可用提示词。
+    </Fragment>
+
+    <Fragment slot="image">
+      <div class="mx-auto max-w-4xl rounded-3xl border border-teal-100 bg-white p-5 text-left shadow-2xl shadow-slate-200/80">
+        <div class="mb-5 flex gap-2">
+          <span class="h-3 w-3 rounded-full bg-rose-400"></span>
+          <span class="h-3 w-3 rounded-full bg-amber-400"></span>
+          <span class="h-3 w-3 rounded-full bg-emerald-400"></span>
+        </div>
+        <div class="grid gap-5 md:grid-cols-[0.8fr_1.2fr]">
+          <div class="rounded-2xl bg-slate-950 p-5 text-teal-50">
+            <p class="mb-3 text-sm font-bold uppercase text-teal-300">Prompt Scope</p>
+            <h2 class="m-0 text-3xl font-bold leading-tight text-white">2 种身份 × 2 个任务</h2>
+            <div class="mt-5 flex flex-wrap gap-2 text-sm">
+              <span class="rounded-full bg-white/10 px-3 py-1">作者</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">审稿人</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">完整论文</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">Rebuttal</span>
+            </div>
+          </div>
+          <div class="space-y-3 rounded-2xl bg-teal-50 p-5">
+            <div class="h-4 w-4/5 rounded-full bg-teal-200"></div>
+            <div class="h-4 w-3/5 rounded-full bg-teal-100"></div>
+            <div class="mt-6 rounded-xl border border-teal-200 bg-white p-4">
+              <p class="m-0 text-sm font-semibold text-slate-500">推荐提示词</p>
+              <p class="m-0 mt-1 text-xl font-bold text-slate-950">完整论文审稿</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Fragment>
+  </Hero>
+
+  <section class="rp-shell">
+    <div class="mx-auto max-w-5xl px-4 md:px-6">
+      <div class="mb-8 text-center">
+        <p class="text-base font-bold uppercase text-secondary">快速选择</p>
+        <h2 class="font-heading text-4xl font-bold tracking-tight text-slate-950 md:text-5xl">两步找到可复制的提示词</h2>
+      </div>
+      <TaskRecommender />
     </div>
-    <TaskRecommender />
   </section>
 
   <ResourceGrid
@@ -57,27 +79,32 @@ const featured = getFeaturedResources(catalog);
     resources={featured.prompts}
   />
 
-  <section class="aw-container aw-section">
-    <div class="aw-section-heading">
-      <p class="aw-eyebrow">原则</p>
-      <h2>少功能，先把提示词体验做好</h2>
-    </div>
-    <div class="aw-feature-grid">
-      <article class="aw-feature-card">
-        <span>01</span>
-        <h3>只保留核心路径</h3>
-        <p>首页只留下身份、任务和复制提示词，避免多余模块分散注意力。</p>
-      </article>
-      <article class="aw-feature-card">
-        <span>02</span>
-        <h3>证据优先</h3>
-        <p>提示词要求使用用户提供的论文内容，避免编造引用、实验和会议规则。</p>
-      </article>
-      <article class="aw-feature-card">
-        <span>03</span>
-        <h3>中英双语</h3>
-        <p>中文是默认版本，英文版本保留同样的信息架构。</p>
-      </article>
-    </div>
-  </section>
-</SiteLayout>
+  <Features
+    tagline="原则"
+    title="少功能，先把提示词体验做好"
+    columns={3}
+    items={[
+      {
+        title: '只保留核心路径',
+        description: '首页只留下身份、任务和复制提示词，避免多余模块分散注意力。',
+        icon: 'tabler:route',
+      },
+      {
+        title: '证据优先',
+        description: '提示词要求使用用户提供的论文内容，避免编造引用、实验和会议规则。',
+        icon: 'tabler:shield-check',
+      },
+      {
+        title: '中英双语',
+        description: '中文是默认版本，英文版本保留同样的信息架构。',
+        icon: 'tabler:language',
+      },
+    ]}
+  />
+
+  <CallToAction
+    title="先把两个高频任务打磨清楚"
+    subtitle="后续再逐步加入更多领域、更多任务和更完整的协作流程。"
+    actions={[{ variant: 'primary', text: '查看提示词库', href: getPermalink('/prompts'), icon: 'tabler:arrow-right' }]}
+  />
+</Layout>

@@ -1,18 +1,15 @@
 ---
-import SiteLayout from '../layouts/SiteLayout.astro';
-import { pathWithBase } from '../lib/urls';
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import { getPermalink } from '~/utils/permalinks';
 ---
 
-<SiteLayout title="Page Not Found" description="The requested page does not exist.">
-  <section class="aw-page-hero">
-    <div class="aw-container">
-      <p class="aw-eyebrow">404</p>
-      <h1>页面不存在</h1>
-      <p>这个页面可能已经被移除。当前网站只保留提示词相关页面。</p>
-      <div class="aw-actions">
-        <a class="rp-button" href={pathWithBase('/')}>返回首页</a>
-        <a class="rp-button secondary" href={pathWithBase('/prompts/')}>查看提示词</a>
-      </div>
-    </div>
-  </section>
-</SiteLayout>
+<Layout metadata={{ title: 'Page Not Found', description: 'The requested page does not exist.' }} locale="zh">
+  <HeroText
+    tagline="404"
+    title="页面不存在"
+    subtitle="这个页面可能已经被移除。当前网站只保留提示词相关页面。"
+    callToAction={{ variant: 'primary', text: '返回首页', href: getPermalink('/') }}
+    callToAction2={{ text: '查看提示词', href: getPermalink('/prompts') }}
+  />
+</Layout>

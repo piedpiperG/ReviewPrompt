@@ -1,8 +1,9 @@
 ---
-import PromptDetail from '../../../components/PromptDetail.astro';
-import SiteLayout from '../../../layouts/SiteLayout.astro';
-import { catalog } from '../../../lib/catalog';
-import { getLocalizedCatalog } from '../../../lib/localization';
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import PromptDetail from '~/components/PromptDetail.astro';
+import { catalog } from '~/lib/catalog';
+import { getLocalizedCatalog } from '~/lib/localization';
 
 export function getStaticPaths() {
   return catalog.prompts.map((prompt) => ({ params: { slug: prompt.slug } }));
@@ -14,18 +15,16 @@ const prompt = getLocalizedCatalog(catalog, 'en').prompts.find((item) => item.sl
 if (!prompt) {
   throw new Error(`Unknown prompt slug: ${slug}`);
 }
+
+const metadata = {
+  title: prompt.title,
+  description: prompt.summary,
+};
 ---
 
-<SiteLayout title={prompt.title} description={prompt.summary} locale="en">
-  <section class="aw-page-hero">
-    <div class="aw-container">
-      <p class="aw-eyebrow">Prompt</p>
-      <h1>{prompt.title}</h1>
-      <p>{prompt.summary}</p>
-    </div>
-  </section>
-
-  <section class="aw-container aw-section compact">
+<Layout metadata={metadata} locale="en">
+  <HeroText tagline="Prompt" title={prompt.title} subtitle={prompt.summary} />
+  <section class="mx-auto max-w-5xl px-4 py-10 md:px-6">
     <PromptDetail slug={prompt.slug} />
   </section>
-</SiteLayout>
+</Layout>

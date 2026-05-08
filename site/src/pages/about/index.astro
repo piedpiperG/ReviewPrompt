@@ -1,21 +1,25 @@
 ---
-import SiteLayout from '../../layouts/SiteLayout.astro';
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+
+const metadata = {
+  title: '关于 ReviewPrompt',
+  description: '产品定位和仓库目标。',
+};
 ---
 
-<SiteLayout title="关于 ReviewPrompt" description="产品定位和仓库目标。" locale="zh">
-  <section class="aw-page-hero">
-    <div class="aw-container">
-      <p class="aw-eyebrow">About</p>
-      <h1>关于 ReviewPrompt</h1>
-      <p>ReviewPrompt 现在先聚焦为一个开放的 AI 辅助论文审稿提示词库。</p>
-    </div>
-  </section>
+<Layout metadata={metadata} locale="zh">
+  <HeroText
+    tagline="About"
+    title="关于 ReviewPrompt"
+    subtitle="ReviewPrompt 现在先聚焦为一个开放的 AI 辅助论文审稿提示词库。"
+  />
 
-  <section class="aw-container aw-section compact">
-    <div class="aw-content-card">
+  <section class="mx-auto max-w-4xl px-4 py-10 md:px-6">
+    <div class="prose prose-slate max-w-none rounded-3xl border border-gray-200 bg-white p-6 shadow-lg shadow-gray-200/50">
       <p>当前网页只面向两类用户：作者和审稿人。</p>
       <p>它先提供两个高频提示词：完整论文审稿和 Rebuttal 回复。</p>
       <p>更多领域和更多任务会在提示词体验稳定后再逐步加回。</p>
     </div>
   </section>
-</SiteLayout>
+</Layout>
