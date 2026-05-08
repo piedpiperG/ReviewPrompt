@@ -1,37 +1,24 @@
 ---
 import CopyButton from './CopyButton.astro';
-import type { PromptResource, SkillResource, WorkflowResource } from '../lib/catalog';
+import type { PromptResource } from '../lib/catalog';
 import { getLocaleFromPathname } from '../lib/localization';
 import { t } from '../lib/ui';
 import { pathWithBase } from '../lib/urls';
 
-type Resource = PromptResource | WorkflowResource | SkillResource;
-
 interface Props {
-  resource: Resource;
+  resource: PromptResource & { statusLabel?: string };
 }
 
 const { resource } = Astro.props;
 const locale = getLocaleFromPathname(Astro.url.pathname);
 const labels = t(locale);
 const statusLabel = 'statusLabel' in resource ? String(resource.statusLabel) : resource.status;
-const typeLabel = {
-  prompt: labels.prompt,
-  workflow: labels.workflow,
-  skill: labels.skill,
-}[resource.type];
 const primaryTags = [
-  typeLabel,
+  labels.prompt,
   statusLabel,
   ...resource.roles.slice(0, 2),
   ...resource.tasks.slice(0, 1),
 ];
-const copyText =
-  resource.type === 'prompt'
-    ? resource.promptText
-    : resource.type === 'skill'
-      ? resource.installCodex
-      : undefined;
 const href = pathWithBase(resource.href);
 ---
 
@@ -51,13 +38,11 @@ const href = pathWithBase(resource.href);
 
   <div class="rp-card__actions">
     <a class="rp-button secondary" href={href}>{labels.view}</a>
-    {copyText && (
-      <CopyButton
-        text={copyText}
-        label={resource.type === 'prompt' ? labels.copyPrompt : labels.copyInstall}
-        copiedLabel={labels.copied}
-        failedLabel={labels.copyFailed}
-      />
-    )}
+    <CopyButton
+      text={resource.promptText}
+      label={labels.copyPrompt}
+      copiedLabel={labels.copied}
+      failedLabel={labels.copyFailed}
+    />
   </div>
 </article>

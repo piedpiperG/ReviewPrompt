@@ -23,7 +23,7 @@ if (!prompt) {
     <h2>{labels.overview}</h2>
     <p>{prompt.summary}</p>
     <div class="rp-card__meta">
-      {[prompt.status, ...prompt.roles, ...prompt.tasks.slice(0, 2), ...prompt.domains.slice(0, 3)].map((item) => (
+      {[...prompt.roles, ...prompt.tasks, ...prompt.domains].map((item) => (
         <span class="rp-pill">{item}</span>
       ))}
     </div>
@@ -32,8 +32,9 @@ if (!prompt) {
   <section class="rp-detail__panel">
     <h2>{labels.useWhen}</h2>
     <ul>
+      {prompt.roles.map((role) => <li>{role}</li>)}
       {prompt.tasks.map((task) => <li>{task}</li>)}
-      {prompt.stages.map((stage) => <li>{stage}</li>)}
+      {prompt.domains.map((domain) => <li>{domain}</li>)}
     </ul>
   </section>
 
@@ -70,7 +71,6 @@ if (!prompt) {
       <li>{labels.license}: {prompt.license}</li>
       <li>{labels.contributor}: {prompt.contributor}</li>
       <li>{labels.models}: {prompt.modelCompatibility.join(', ')}</li>
-      <li>{labels.skillReady}: {prompt.hasSkill ? labels.yes : labels.no}</li>
     </ul>
   </section>
 </div>

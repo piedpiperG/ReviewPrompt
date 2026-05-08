@@ -1,8 +1,8 @@
 # ReviewPrompt
 
-Open prompts, workflows, and agent skills for AI-assisted peer review.
+Open prompts for AI-assisted peer review.
 
-ReviewPrompt is not a prompt dump. It is a structured registry for reusable review methods: prompts with metadata, workflows with steps, and installable skills for local agent tools.
+ReviewPrompt is not a prompt dump. The current website focuses on two clear prompt flows for AI papers: full paper review and rebuttal.
 
 ## Product Direction
 
@@ -10,7 +10,7 @@ The source requirement document is [`guide_basement.md`](guide_basement.md). The
 
 - GitHub Pages + Astro Starlight.
 - Markdown / MDX content pages.
-- Structured Prompt, Workflow, and Skill catalog.
+- Simplified prompt catalog for authors and reviewers.
 - Bilingual Chinese / English website, with Chinese as the default locale and English under `/en/`.
 - GitHub Issue Forms for community submissions.
 - GitHub Actions deployment.
@@ -21,9 +21,8 @@ The source requirement document is [`guide_basement.md`](guide_basement.md). The
 .
 ├── docs/                    # Product specs and development plans
 ├── site/                    # Astro Starlight website
-├── skills/                  # Installable Agent Skills
 ├── data/                    # Schemas, taxonomy, and future static exports
-├── .github/                 # Issue Forms and deployment workflow
+├── .github/                 # Issue Forms and deployment automation
 └── guide_basement.md        # Original requirement and product strategy
 ```
 
@@ -47,12 +46,10 @@ npm --prefix site run build
 
 - Task-oriented home page.
 - Prompt Library.
-- Workflow Library.
-- Skill Registry.
-- Review use cases.
+- Author and reviewer modes.
+- Full paper and rebuttal tasks.
 - Contribution entry.
-- Safety and confidentiality guidance.
 
 ## License
 
-The code and skills are intended for open-source distribution. Final license text should be added before public release.
+The code and prompt content are intended for open-source distribution. Final license text should be added before public release.

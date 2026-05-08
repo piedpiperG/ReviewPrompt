@@ -1,20 +1,17 @@
 ---
 title: AI Review Commons
-description: 面向 AI 辅助论文审稿的开源 Prompt、Workflow 与 Agent Skill 方法库。
+description: 面向人工智能论文审稿的双语提示词库。
 template: splash
 hero:
   title: AI Review Commons
-  tagline: 面向 AI 辅助论文审稿的开源 Prompt、Workflow 与 Agent Skill 方法库。
+  tagline: 面向人工智能论文审稿的双语提示词库。先选身份和任务，再复制提示词。
   actions:
-    - text: 浏览提示词
+    - text: 直接选择提示词
       link: /ReviewPrompt/prompts/
       icon: right-arrow
-    - text: 审一篇论文
-      link: /ReviewPrompt/use-cases/review-my-paper/
-      variant: secondary
     - text: 提交提示词
       link: /ReviewPrompt/contribute/
-      variant: minimal
+      variant: secondary
 ---
 
 import ResourceGrid from '../../components/ResourceGrid.astro';
@@ -26,30 +23,14 @@ export const featured = getFeaturedResources(catalog);
 <TaskRecommender />
 
 <ResourceGrid
-  title="精选工作流"
-  description="从任务导向的审稿流程开始，而不是复制一段孤立提示词。"
-  resources={featured.workflows}
-/>
-
-<ResourceGrid
-  title="精选提示词"
-  description="每个提示词都包含适用场景、输入输出预期、限制说明、元数据和复制入口。"
+  title="当前只保留两个提示词"
+  description="完整论文审稿和 Rebuttal 是第一版核心任务。"
   resources={featured.prompts}
 />
 
-<ResourceGrid
-  title="Skill-ready 资源"
-  description="将结构化审稿流程安装到 Codex、Claude Code 或其他 Agent 环境。"
-  resources={featured.skills}
-/>
+## 使用原则
 
-## 为什么做这个项目
-
-ReviewPrompt 将分散的论文审稿提示词转化为可复用的审稿基础设施。第一版聚焦结构化资源：带元数据的提示词、带步骤的工作流，以及带安全说明的可安装 Skills。
-
-## 信任模型
-
-- 开源，并通过 Git 管理版本。
-- 提示词元数据包含适用场景、状态、来源、许可证和限制。
-- Skill 页面区分纯提示词资源和可安装 Agent 工作流。
-- 安全说明明确：AI 输出是决策辅助，不替代人类判断。
+- 只保留作者和审稿人两种使用模式。
+- 只覆盖完整论文和 Rebuttal 两个任务。
+- 领域固定为人工智能。
+- AI 输出只作为辅助，不替代人类判断。

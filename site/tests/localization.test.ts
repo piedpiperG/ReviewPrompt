@@ -22,30 +22,22 @@ describe('localization', () => {
     const zhPrompt = getLocalizedResource(catalog.prompts[0], 'zh');
     const enPrompt = getLocalizedResource(catalog.prompts[0], 'en');
 
-    expect(zhPrompt.title).toBe('完整结构化论文审稿');
+    expect(zhPrompt.title).toBe('完整论文审稿');
     expect(zhPrompt.roles).toContain('审稿人');
+    expect(zhPrompt.domains).toEqual(['人工智能']);
     expect(enPrompt.title).toBe('Full Structured Peer Review');
     expect(enPrompt.roles).toContain('Reviewer');
+    expect(enPrompt.domains).toEqual(['Artificial Intelligence']);
   });
 
-  it('keeps duplicate slugs localized by resource type', () => {
+  it('keeps localized catalog prompt-only', () => {
     const zhCatalog = getLocalizedCatalog(catalog, 'zh');
 
-    expect(zhCatalog.workflows.find((item) => item.slug === 'full-paper-review')?.title).toBe(
-      '完整论文审稿流程',
-    );
-    expect(zhCatalog.skills.find((item) => item.slug === 'full-paper-review')?.title).toBe(
-      'full-paper-review',
-    );
-    expect(zhCatalog.workflows.find((item) => item.slug === 'meta-review-synthesis')?.steps).toEqual(
-      [
-        '输入多份审稿意见和评分。',
-        '提取共识点。',
-        '提取冲突和不确定性。',
-        '判断分歧是否影响最终决策。',
-        '起草 AC 风格总结。',
-      ],
-    );
+    expect(zhCatalog.prompts.map((item) => item.title)).toEqual([
+      '完整论文审稿',
+      'Rebuttal 回复起草',
+    ]);
+    expect(Object.keys(zhCatalog)).toEqual(['prompts']);
   });
 
   it('localizes catalog links for English pages', () => {

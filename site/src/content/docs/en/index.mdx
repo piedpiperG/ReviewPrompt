@@ -1,20 +1,17 @@
 ---
 title: AI Review Commons
-description: Open prompts, workflows, and agent skills for AI-assisted peer review.
+description: Bilingual prompts for AI paper review.
 template: splash
 hero:
   title: AI Review Commons
-  tagline: Open prompts, workflows, and agent skills for AI-assisted peer review.
+  tagline: Bilingual prompts for AI paper review. Choose a role and task, then copy the prompt.
   actions:
-    - text: Browse Prompts
+    - text: Choose a Prompt
       link: /ReviewPrompt/en/prompts/
       icon: right-arrow
-    - text: Review My Paper
-      link: /ReviewPrompt/en/use-cases/review-my-paper/
-      variant: secondary
     - text: Submit a Prompt
       link: /ReviewPrompt/en/contribute/
-      variant: minimal
+      variant: secondary
 ---
 
 import ResourceGrid from '../../../components/ResourceGrid.astro';
@@ -26,30 +23,14 @@ export const featured = getFeaturedResources(catalog);
 <TaskRecommender />
 
 <ResourceGrid
-  title="Featured Workflows"
-  description="Start from a task-oriented review process instead of copying an isolated prompt."
-  resources={featured.workflows}
-/>
-
-<ResourceGrid
-  title="Curated Prompts"
-  description="Each prompt includes use cases, input and output expectations, limits, metadata, and copy actions."
+  title="Only Two Prompts For Now"
+  description="Full paper review and rebuttal are the first two core tasks."
   resources={featured.prompts}
 />
 
-<ResourceGrid
-  title="Skill-ready Resources"
-  description="Install structured review workflows into Codex, Claude Code, or another agent environment."
-  resources={featured.skills}
-/>
+## Use Principles
 
-## Why This Exists
-
-ReviewPrompt turns scattered peer-review prompts into reusable review infrastructure. The first version focuses on structured resources: prompts with metadata, workflows with steps, and installable skills with safety guidance.
-
-## Trust Model
-
-- Open source and versioned in Git.
-- Prompt metadata includes use cases, status, source, license, and limits.
-- Skill pages separate prompt-only resources from installable agent workflows.
-- Safety guidance treats AI output as decision support, not a replacement for human judgment.
+- Only two modes: author and reviewer.
+- Only two tasks: full paper review and rebuttal.
+- Domain is fixed to artificial intelligence.
+- AI output supports judgment; it does not replace human review.

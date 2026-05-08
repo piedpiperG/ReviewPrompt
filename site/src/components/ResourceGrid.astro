@@ -1,27 +1,22 @@
 ---
 import ResourceCard from './ResourceCard.astro';
 import { catalog } from '../lib/catalog';
-import type { PromptResource, SkillResource, WorkflowResource } from '../lib/catalog';
+import type { PromptResource } from '../lib/catalog';
 import { getLocaleFromPathname, getLocalizedResource } from '../lib/localization';
-
-type Resource = PromptResource | WorkflowResource | SkillResource;
 
 interface Props {
   title?: string;
   description?: string;
-  resources: Resource[];
+  resources: PromptResource[];
 }
 
 const { title, description, resources } = Astro.props;
 const locale = getLocaleFromPathname(Astro.url.pathname);
 const resourcesByKey = new Map(
-  [...catalog.prompts, ...catalog.workflows, ...catalog.skills].map((resource) => [
-    `${resource.type}:${resource.slug}`,
-    resource,
-  ]),
+  catalog.prompts.map((resource) => [resource.slug, resource]),
 );
 const localizedResources = resources.map((resource) =>
-  getLocalizedResource(resourcesByKey.get(`${resource.type}:${resource.slug}`) ?? resource, locale),
+  getLocalizedResource(resourcesByKey.get(resource.slug) ?? resource, locale),
 );
 ---
 

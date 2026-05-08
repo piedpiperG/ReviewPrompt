@@ -1,16 +1,16 @@
 ---
 title: 提示词库
-description: 按任务、角色、阶段和领域浏览 AI 辅助论文审稿提示词。
+description: 只保留完整论文和 Rebuttal 两个核心提示词。
 ---
 
 import ResourceGrid from '../../../components/ResourceGrid.astro';
 import { catalog } from '../../../lib/catalog';
 
 <ResourceGrid
-  description="提示词会以方法卡形式呈现：它做什么、何时使用、需要什么输入、产生什么输出，以及边界在哪里。"
+  description="选择身份和任务后复制即可使用。当前领域固定为人工智能，后续再扩展更多任务。"
   resources={catalog.prompts}
 />
 
-## 目录筛选
+## 当前范围
 
-第一版使用结构化元数据描述任务、角色、论文阶段、领域、状态和 Skill 就绪情况。首页的任务推荐器也使用同一套元数据，因此后续可以在不改变内容模型的前提下扩展为更完整的筛选目录。
+页面先服务两个高频动作：完整论文审稿、Rebuttal 回复。

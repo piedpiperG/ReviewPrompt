@@ -7,51 +7,59 @@ import {
 } from '../src/lib/catalog';
 
 describe('catalog resources', () => {
-  it('exposes featured prompts, workflows, and skills for the home page', () => {
+  it('exposes only the two prompt-first choices for the simplified home page', () => {
     const featured = getFeaturedResources(catalog);
 
-    expect(featured.prompts).toHaveLength(3);
-    expect(featured.workflows.map((item) => item.slug)).toContain('full-paper-review');
-    expect(featured.skills.map((item) => item.slug)).toContain('full-paper-review');
+    expect(featured.prompts.map((item) => item.slug)).toEqual([
+      'full-structured-peer-review',
+      'rebuttal-response-drafting',
+    ]);
+    expect(Object.keys(featured)).toEqual(['prompts']);
   });
 
-  it('recommends a reviewer workflow with prompt and skill matches', () => {
+  it('keeps the public prompt catalog limited to author/reviewer, full paper/rebuttal, and AI', () => {
+    const roles = new Set(catalog.prompts.flatMap((item) => item.roles));
+    const tasks = new Set(catalog.prompts.flatMap((item) => item.tasks));
+    const domains = new Set(catalog.prompts.flatMap((item) => item.domains));
+
+    expect(catalog.prompts.map((item) => item.slug)).toEqual([
+      'full-structured-peer-review',
+      'rebuttal-response-drafting',
+    ]);
+    expect([...roles].sort()).toEqual(['Author', 'Reviewer']);
+    expect([...tasks].sort()).toEqual(['Full paper review', 'Rebuttal']);
+    expect([...domains]).toEqual(['Artificial Intelligence']);
+  });
+
+  it('recommends a reviewer full-paper prompt', () => {
     const recommendation = recommendResources(catalog, {
       role: 'Reviewer',
       task: 'Full paper review',
-      stage: 'Under review',
-      domain: 'General',
+      domain: 'Artificial Intelligence',
     });
 
-    expect(recommendation.workflow?.slug).toBe('full-paper-review');
-    expect(recommendation.prompts.map((item) => item.slug)).toContain('full-structured-peer-review');
-    expect(recommendation.skills.map((item) => item.slug)).toContain('full-paper-review');
+    expect(recommendation.prompts.map((item) => item.slug)).toEqual(['full-structured-peer-review']);
+    expect(Object.keys(recommendation)).toEqual(['prompts']);
   });
 
-  it('recommends pre-submission resources for authors', () => {
+  it('recommends an author rebuttal prompt without extra criteria', () => {
     const recommendation = recommendResources(catalog, {
       role: 'Author',
-      task: 'Pre-submission self review',
-      stage: 'Submission-ready',
-      domain: 'Machine Learning',
+      task: 'Rebuttal',
+      domain: 'Artificial Intelligence',
     });
 
-    expect(recommendation.workflow?.slug).toBe('pre-submission-self-review');
-    expect(recommendation.prompts.map((item) => item.slug)).toContain('reviewer-attack-simulation');
-    expect(recommendation.skills.map((item) => item.slug)).toContain('pre-submission-review');
+    expect(recommendation.prompts.map((item) => item.slug)).toEqual(['rebuttal-response-drafting']);
   });
 
-  it('builds a static index with searchable resource metadata', () => {
+  it('builds a prompt-only static index with searchable metadata', () => {
     const index = buildStaticIndex(catalog);
 
-    expect(index.length).toBeGreaterThanOrEqual(16);
-    expect(index).toContainEqual(
-      expect.objectContaining({
-        slug: 'methodology-critique',
-        type: 'prompt',
-        title: 'Methodology Critique',
-      }),
-    );
+    expect(index.map((item) => item.slug)).toEqual([
+      'full-structured-peer-review',
+      'rebuttal-response-drafting',
+    ]);
+    expect(index.every((item) => item.type === 'prompt')).toBe(true);
     expect(index.every((item) => item.searchText.length > 40)).toBe(true);
   });
 });

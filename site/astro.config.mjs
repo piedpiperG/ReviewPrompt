@@ -11,7 +11,7 @@ export default defineConfig({
         'zh-CN': 'ReviewPrompt',
         en: 'ReviewPrompt',
       },
-      description: '面向 AI 辅助论文审稿的开源 Prompt、Workflow 与 Agent Skill 方法库。',
+      description: '面向人工智能论文审稿的双语提示词库。',
       locales: {
         root: {
           label: '简体中文',
@@ -35,49 +35,29 @@ export default defineConfig({
         {
           label: '开始',
           translations: { en: 'Start' },
-          items: [
-            { label: '首页', translations: { en: 'Home' }, slug: 'index' },
-            {
-              label: '审一篇论文',
-              translations: { en: 'Review My Paper' },
-              slug: 'use-cases/review-my-paper',
-            },
-            {
-              label: '改进我的论文',
-              translations: { en: 'Improve My Manuscript' },
-              slug: 'use-cases/improve-my-manuscript',
-            },
-            {
-              label: '安装 Skills',
-              translations: { en: 'Install Skills' },
-              slug: 'use-cases/install-skills',
-            },
-          ],
+          items: [{ label: '首页', translations: { en: 'Home' }, slug: 'index' }],
         },
         {
           label: '提示词',
           translations: { en: 'Prompts' },
-          items: [{ autogenerate: { directory: 'prompts' } }],
-        },
-        {
-          label: '工作流',
-          translations: { en: 'Workflows' },
-          items: [{ autogenerate: { directory: 'workflows' } }],
-        },
-        {
-          label: 'Skills',
-          translations: { en: 'Skills' },
-          items: [{ autogenerate: { directory: 'skills' } }],
+          items: [
+            { label: '提示词库', translations: { en: 'Prompt Library' }, slug: 'prompts' },
+            {
+              label: '完整论文审稿',
+              translations: { en: 'Full Paper Review' },
+              slug: 'prompts/full-structured-peer-review',
+            },
+            {
+              label: 'Rebuttal 回复',
+              translations: { en: 'Rebuttal Response' },
+              slug: 'prompts/rebuttal-response-drafting',
+            },
+          ],
         },
         {
           label: '贡献',
           translations: { en: 'Contribute' },
           items: [{ autogenerate: { directory: 'contribute' } }],
-        },
-        {
-          label: '文档',
-          translations: { en: 'Docs' },
-          items: [{ autogenerate: { directory: 'docs' } }],
         },
         { label: '关于', translations: { en: 'About' }, slug: 'about' },
       ],
