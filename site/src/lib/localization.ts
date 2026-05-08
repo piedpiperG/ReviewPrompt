@@ -1,4 +1,4 @@
-import type { Catalog, PromptResource, SkillWorkflow, WorkflowStep } from './catalog';
+import type { Catalog, PromptPackage, PromptResource, ScenarioEntry, SkillWorkflow, WorkflowStep } from './catalog';
 
 export type Locale = 'zh' | 'en';
 
@@ -17,6 +17,9 @@ interface PromptTranslation {
   workflowSteps?: WorkflowStep[];
   skillWorkflow?: SkillWorkflow;
 }
+
+type PromptPackageTranslation = Partial<Omit<PromptPackage, 'slug' | 'promptSlugs' | 'href' | 'skillUrl'>>;
+type ScenarioEntryTranslation = Partial<Omit<ScenarioEntry, 'id' | 'packageSlug' | 'href'>>;
 
 const reviewerImitationPromptZh = `现在你是一个专业严格的 INTERSPEECH 会议审稿人。
 
@@ -222,6 +225,78 @@ const zhPromptTranslations: Record<string, PromptTranslation> = {
   },
 };
 
+const zhPromptPackageTranslations: Record<string, PromptPackageTranslation> = {
+  'submission-readiness-pack': {
+    title: '投稿前体检包',
+    summary: '面向投稿前作者，把写作、引用、实验、图表、逻辑、贡献证据链和接收风险放在一起检查。',
+    scenario: '投稿前',
+    includedPrompts: [
+      '基础写作类错误',
+      '关键词一致性',
+      '引用错误',
+      '实验设置错误',
+      '图/表正文一致性问题',
+      '叙述逻辑一致性问题',
+      '贡献点与证据链一致性',
+      '模拟审稿人接收风险评估',
+    ],
+    outcomes: ['按接收风险排序的问题', '有证据的修改清单', '作者自查报告'],
+  },
+  'reviewer-simulation-pack': {
+    title: '模拟审稿压力测试包',
+    summary: '从审稿人、挑剔审稿人和 meta-review 视角提前压测论文，找出可能被质疑的点。',
+    scenario: '审稿压力测试',
+    includedPrompts: ['严格审稿人模拟', '接收风险评分', '审稿人可能追问的问题', '贡献点与证据链一致性'],
+    outcomes: ['潜在审稿意见', '评分与信心估计', '优先修改路线'],
+  },
+  'rebuttal-sprint-pack': {
+    title: 'Rebuttal 冲刺包',
+    summary: '把 reviews 转成给老师或 coauthor 快速判断的简报、风险清单和回复计划。',
+    scenario: '收到 reviews 后',
+    includedPrompts: ['review 总结', '保留审稿意见英文原文', '当前 rebuttal 简报', '缺失证据和高风险说法'],
+    outcomes: ['可分享 rebuttal 简报', '需要导师决策的问题', '证据缺口清单'],
+  },
+  'agent-skill-install-pack': {
+    title: 'Agent 技能安装包',
+    summary: '把一个 ReviewPrompt 地址喂给 Codex 或 Claude Code，让论文审稿 prompt 变成可复用技能。',
+    scenario: 'Agent 原生工作流',
+    includedPrompts: ['author-paper-check skill', 'full-paper-review skill', '多轮 Prompt 工作流', 'Rebuttal 简报 Prompt'],
+    outcomes: ['不用手动复制 Prompt', '可复用论文审稿命令', '基于工作区文件的审查报告'],
+    agentInstruction: `请从下面两个地址安装或读取 ReviewPrompt 的论文审稿技能：
+- https://github.com/piedpiperG/ReviewPrompt/blob/main/skills/author-paper-check/SKILL.md
+- https://github.com/piedpiperG/ReviewPrompt/blob/main/skills/full-paper-review/SKILL.md
+
+安装后，在当前论文项目中使用 author-paper-check 做多轮作者自查，使用 full-paper-review 做结构化审稿式评估。`,
+  },
+};
+
+const zhScenarioTranslations: Record<string, ScenarioEntryTranslation> = {
+  'before-submission': {
+    title: '我准备投稿，想知道哪里会被拒',
+    summary: '用投稿前体检包检查写作、引用、实验、逻辑、图表和证据链风险。',
+    stage: '投稿前',
+    cta: '打开体检包',
+  },
+  'simulate-review': {
+    title: '我想提前看到真实审稿人会怎么怼',
+    summary: '用模拟审稿压力测试包估计接收风险、评分和审稿人可能追问的问题。',
+    stage: '压力测试',
+    cta: '模拟审稿',
+  },
+  'after-reviews': {
+    title: '我收到了 reviews，要快速组织 rebuttal',
+    summary: '生成带原文摘录、证据缺口和导师决策点的 Rebuttal 简报。',
+    stage: 'Rebuttal',
+    cta: '准备回复',
+  },
+  'install-agent-skill': {
+    title: '我想让 Codex / Claude Code 直接安装技能',
+    summary: '把 ReviewPrompt 地址给 agent，让论文审稿 Prompt 变成工作区里的可复用技能。',
+    stage: 'Agent 安装',
+    cta: '复制安装指令',
+  },
+};
+
 const zhStatusLabels = {
   curated: '精选',
   tested: '已测试',
@@ -244,6 +319,8 @@ export function localizedPath(path: string, locale: Locale): string {
 export function getLocalizedCatalog(source: Catalog, locale: Locale): Catalog {
   return {
     prompts: source.prompts.map((resource) => getLocalizedResource(resource, locale)),
+    promptPackages: source.promptPackages.map((promptPackage) => getLocalizedPromptPackage(promptPackage, locale)),
+    scenarios: source.scenarios.map((scenario) => getLocalizedScenarioEntry(scenario, locale)),
   };
 }
 
@@ -267,4 +344,28 @@ function localizeHref(resource: PromptResource, locale: Locale): PromptResource 
     ...resource,
     href: localizedPath(resource.href, locale),
   };
+}
+
+export function getLocalizedPromptPackage(promptPackage: PromptPackage, locale: Locale): PromptPackage {
+  const localized = locale === 'zh' ? { ...promptPackage, ...zhPromptPackageTranslations[promptPackage.slug] } : promptPackage;
+
+  return {
+    ...localized,
+    href: localizePathIfNeeded(localized.href, locale),
+  };
+}
+
+export function getLocalizedScenarioEntry(scenario: ScenarioEntry, locale: Locale): ScenarioEntry {
+  const localized = locale === 'zh' ? { ...scenario, ...zhScenarioTranslations[scenario.id] } : scenario;
+
+  return {
+    ...localized,
+    href: localizePathIfNeeded(localized.href, locale),
+  };
+}
+
+function localizePathIfNeeded(path: string, locale: Locale): string {
+  if (!path.startsWith('/')) return path;
+
+  return localizedPath(path, locale);
 }

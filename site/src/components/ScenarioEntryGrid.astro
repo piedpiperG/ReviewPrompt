@@ -1,0 +1,31 @@
+---
+import type { ScenarioEntry } from '~/lib/catalog';
+import { pathWithBase } from '~/lib/urls';
+
+interface Props {
+  title: string;
+  description: string;
+  scenarios: ScenarioEntry[];
+}
+
+const { title, description, scenarios } = Astro.props;
+const hrefFor = (href: string) => (href.startsWith('#') ? href : pathWithBase(href));
+---
+
+<section class="rp-section rp-scenarios">
+  <p class="rp-section__eyebrow">Scenario Entry</p>
+  <h2>{title}</h2>
+  <p>{description}</p>
+  <div class="rp-scenario-grid">
+    {
+      scenarios.map((scenario) => (
+        <a class="rp-scenario-card" href={hrefFor(scenario.href)}>
+          <span class="rp-pill">{scenario.stage}</span>
+          <h3>{scenario.title}</h3>
+          <p>{scenario.summary}</p>
+          <span class="rp-scenario-card__cta">{scenario.cta}</span>
+        </a>
+      ))
+    }
+  </div>
+</section>

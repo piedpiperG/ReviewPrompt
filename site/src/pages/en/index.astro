@@ -3,15 +3,20 @@ import Layout from '~/layouts/PageLayout.astro';
 import Hero from '~/components/widgets/Hero.astro';
 import Features from '~/components/widgets/Features.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
+import AgentInstallPanel from '~/components/AgentInstallPanel.astro';
+import PromptPackageGrid from '~/components/PromptPackageGrid.astro';
 import ResourceGrid from '~/components/ResourceGrid.astro';
-import TaskRecommender from '~/components/TaskRecommender.astro';
+import ScenarioEntryGrid from '~/components/ScenarioEntryGrid.astro';
 import { catalog, getFeaturedResources } from '~/lib/catalog';
+import { getLocalizedCatalog } from '~/lib/localization';
 import { getPermalink } from '~/utils/permalinks';
 
 const featured = getFeaturedResources(catalog);
+const localizedCatalog = getLocalizedCatalog(catalog, 'en');
+const agentPackage = localizedCatalog.promptPackages.find((item) => item.slug === 'agent-skill-install-pack');
 const metadata = {
   title: 'AI Review Commons',
-  description: 'Prompts for author-side paper checks, reviewer simulation, and rebuttal briefing.',
+  description: 'Prompt packages and installable agent skills for AI paper review.',
 };
 ---
 
@@ -19,17 +24,17 @@ const metadata = {
   <Hero
     tagline="AI Review Commons"
     actions={[
-      { variant: 'primary', text: 'Choose a Prompt', href: getPermalink('/en/prompts'), icon: 'tabler:copy' },
-      { text: 'Submit a Prompt', href: getPermalink('/en/contribute') },
+      { variant: 'primary', text: 'Start by Scenario', href: '#scenario-entry', icon: 'tabler:route' },
+      { text: 'Install Agent Skill', href: '#agent-skill-install-pack' },
     ]}
   >
     <Fragment slot="title">
-      A clean prompt tool for <span class="text-primary">AI paper review</span>
+      Installable prompt packages for <span class="text-primary">AI paper review</span>
     </Fragment>
 
     <Fragment slot="subtitle">
-      The site is now arranged around three source-backed resources: reviewer simulation, multi-pass author checks,
-      and rebuttal briefing.
+      Choose a package for submission readiness, reviewer simulation, or rebuttal sprint. Then hand one ReviewPrompt URL
+      to Codex / Claude Code so review skills can live inside the paper workspace.
     </Fragment>
 
     <Fragment slot="image">
@@ -41,21 +46,21 @@ const metadata = {
         </div>
         <div class="grid gap-5 md:grid-cols-[0.8fr_1.2fr]">
           <div class="rounded-2xl bg-slate-950 p-5 text-teal-50">
-            <p class="mb-3 text-sm font-bold uppercase text-teal-300">Prompt Scope</p>
-            <h2 class="m-0 text-3xl font-bold leading-tight text-white">3 author workbenches</h2>
+            <p class="mb-3 text-sm font-bold uppercase text-teal-300">ReviewPrompt Packs</p>
+            <h2 class="m-0 text-3xl font-bold leading-tight text-white">4 paper-stage entries</h2>
             <div class="mt-5 flex flex-wrap gap-2 text-sm">
-              <span class="rounded-full bg-white/10 px-3 py-1">Reviewer simulation</span>
-              <span class="rounded-full bg-white/10 px-3 py-1">Multi-pass check</span>
-              <span class="rounded-full bg-white/10 px-3 py-1">Rebuttal</span>
-              <span class="rounded-full bg-white/10 px-3 py-1">Skill workflow</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">Submission readiness</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">Review pressure test</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">Rebuttal sprint</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">Agent skill install</span>
             </div>
           </div>
           <div class="space-y-3 rounded-2xl bg-teal-50 p-5">
             <div class="h-4 w-4/5 rounded-full bg-teal-200"></div>
             <div class="h-4 w-3/5 rounded-full bg-teal-100"></div>
             <div class="mt-6 rounded-xl border border-teal-200 bg-white p-4">
-              <p class="m-0 text-sm font-semibold text-slate-500">Recommended Path</p>
-              <p class="m-0 mt-1 text-xl font-bold text-slate-950">Start with multi-pass checks</p>
+              <p class="m-0 text-sm font-semibold text-slate-500">One line for your agent</p>
+              <p class="m-0 mt-1 text-xl font-bold text-slate-950">Install ReviewPrompt paper-review skills</p>
             </div>
           </div>
         </div>
@@ -63,19 +68,38 @@ const metadata = {
     </Fragment>
   </Hero>
 
-  <section class="rp-shell">
-    <div class="mx-auto max-w-5xl px-4 md:px-6">
-      <div class="mb-8 text-center">
-        <p class="text-base font-bold uppercase text-secondary">Quick Start</p>
-        <h2 class="font-heading text-4xl font-bold tracking-tight text-slate-950 md:text-5xl">Choose by current task</h2>
-      </div>
-      <TaskRecommender />
-    </div>
-  </section>
+  <div id="scenario-entry">
+    <ScenarioEntryGrid
+      title="Where are you in the paper cycle?"
+      description="Start with the situation, not the prompt. Each entry points to a package of prompts and agent workflow instructions."
+      scenarios={localizedCatalog.scenarios}
+    />
+  </div>
+
+  <PromptPackageGrid
+    title="Prompt Packages"
+    description="Single prompts, independent review passes, and agent instructions are bundled into executable paper-review paths."
+    packages={localizedCatalog.promptPackages}
+    openLabel="Open Prompt"
+    includedLabel="Included"
+    outcomeLabel="Outcome"
+  />
+
+  {agentPackage && (
+    <AgentInstallPanel
+      title="Install ReviewPrompt into Codex / Claude Code"
+      subtitle="This first version provides a copy-ready install instruction and GitHub Skill URLs. Give it to the agent so later paper reviews can run without manual prompt copying."
+      noCopyLabel="No manual prompt copying"
+      promptPackage={agentPackage}
+      copyLabel="Copy Install Instruction"
+      copiedLabel="Copied"
+      failedLabel="Copy failed"
+    />
+  )}
 
   <ResourceGrid
-    title="Three Resources Available Now"
-    description="A reviewer-simulation prompt, a multi-pass author check workflow, and a rebuttal briefing prompt."
+    title="Underlying Prompt Resources"
+    description="Packages still expose the source prompts so users can inspect or copy individual pieces when needed."
     resources={featured.prompts}
   />
 
@@ -85,26 +109,26 @@ const metadata = {
     columns={3}
     items={[
       {
-        title: 'Author-side first',
-        description: 'The current resources help authors judge quality, find problems, and prepare rebuttal briefing material.',
+        title: 'Scenario first',
+        description: 'Users begin from submission, reviewer simulation, rebuttal, or agent installation instead of browsing isolated prompts.',
         icon: 'tabler:route',
       },
       {
-        title: 'Independent passes',
-        description: 'The paper-check workflow splits seven checkpoints into separate LLM passes for more specific feedback.',
+        title: 'Prompts become paths',
+        description: 'Packages connect single prompts, checkpoint passes, and workflow instructions into a clearer review route.',
         icon: 'tabler:shield-check',
       },
       {
-        title: 'Agent-ready',
-        description: 'The workflow page includes copy-ready Codex / Claude Code instructions for paper-project reviews.',
+        title: 'Installable by design',
+        description: 'The main promise is to hand ReviewPrompt to Codex / Claude Code so paper-review skills enter the workspace.',
         icon: 'tabler:terminal-2',
       },
     ]}
   />
 
   <CallToAction
-    title="Start with the author check loop"
-    subtitle="Cover reviewer simulation, multi-pass paper checks, and rebuttal briefing before expanding the library."
-    actions={[{ variant: 'primary', text: 'Open Prompt Library', href: getPermalink('/en/prompts'), icon: 'tabler:arrow-right' }]}
+    title="Next, turn contributions into packages"
+    subtitle="Community prompts can enter review, then graduate into submission, rebuttal, or agent-skill packages."
+    actions={[{ variant: 'primary', text: 'Submit a Prompt', href: getPermalink('/en/contribute'), icon: 'tabler:arrow-right' }]}
   />
 </Layout>

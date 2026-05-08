@@ -3,15 +3,20 @@ import Layout from '~/layouts/PageLayout.astro';
 import Hero from '~/components/widgets/Hero.astro';
 import Features from '~/components/widgets/Features.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
+import AgentInstallPanel from '~/components/AgentInstallPanel.astro';
+import PromptPackageGrid from '~/components/PromptPackageGrid.astro';
 import ResourceGrid from '~/components/ResourceGrid.astro';
-import TaskRecommender from '~/components/TaskRecommender.astro';
+import ScenarioEntryGrid from '~/components/ScenarioEntryGrid.astro';
 import { catalog, getFeaturedResources } from '~/lib/catalog';
+import { getLocalizedCatalog } from '~/lib/localization';
 import { getPermalink } from '~/utils/permalinks';
 
 const featured = getFeaturedResources(catalog);
+const localizedCatalog = getLocalizedCatalog(catalog, 'zh');
+const agentPackage = localizedCatalog.promptPackages.find((item) => item.slug === 'agent-skill-install-pack');
 const metadata = {
   title: 'AI Review Commons',
-  description: '面向作者的论文质检、模拟审稿和 Rebuttal 简报提示词库。',
+  description: '面向作者和审稿人的论文审稿 Prompt 套餐与 Agent 技能库。',
 };
 ---
 
@@ -19,17 +24,17 @@ const metadata = {
   <Hero
     tagline="AI Review Commons"
     actions={[
-      { variant: 'primary', text: '选择提示词', href: getPermalink('/prompts'), icon: 'tabler:copy' },
-      { text: '提交提示词', href: getPermalink('/contribute') },
+      { variant: 'primary', text: '按场景开始', href: '#scenario-entry', icon: 'tabler:route' },
+      { text: '安装 Agent 技能', href: '#agent-skill-install-pack' },
     ]}
   >
     <Fragment slot="title">
-      把论文审稿提示词做成
-      <span class="text-primary">清晰好用</span> 的工具
+      把论文审稿能力做成
+      <span class="text-primary">可安装的 Prompt 套餐</span>
     </Fragment>
 
     <Fragment slot="subtitle">
-      当前围绕三个真实资源重排：模拟审稿人评估论文质量、逐项多轮自查论文问题、整理 Rebuttal 简报。
+      从投稿前体检、模拟审稿到 Rebuttal 冲刺，先按论文阶段选择套餐；后续直接把本站 URL 喂给 Codex / Claude Code，让审稿技能进入你的论文项目。
     </Fragment>
 
     <Fragment slot="image">
@@ -41,21 +46,21 @@ const metadata = {
         </div>
         <div class="grid gap-5 md:grid-cols-[0.8fr_1.2fr]">
           <div class="rounded-2xl bg-slate-950 p-5 text-teal-50">
-            <p class="mb-3 text-sm font-bold uppercase text-teal-300">Prompt Scope</p>
-            <h2 class="m-0 text-3xl font-bold leading-tight text-white">3 个作者工作台</h2>
+            <p class="mb-3 text-sm font-bold uppercase text-teal-300">ReviewPrompt Packs</p>
+            <h2 class="m-0 text-3xl font-bold leading-tight text-white">4 个论文阶段入口</h2>
             <div class="mt-5 flex flex-wrap gap-2 text-sm">
-              <span class="rounded-full bg-white/10 px-3 py-1">模拟审稿</span>
-              <span class="rounded-full bg-white/10 px-3 py-1">逐项质检</span>
-              <span class="rounded-full bg-white/10 px-3 py-1">Rebuttal</span>
-              <span class="rounded-full bg-white/10 px-3 py-1">Skill 工作流</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">投稿前体检</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">审稿压力测试</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">Rebuttal 冲刺</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">Agent 技能安装</span>
             </div>
           </div>
           <div class="space-y-3 rounded-2xl bg-teal-50 p-5">
             <div class="h-4 w-4/5 rounded-full bg-teal-200"></div>
             <div class="h-4 w-3/5 rounded-full bg-teal-100"></div>
             <div class="mt-6 rounded-xl border border-teal-200 bg-white p-4">
-              <p class="m-0 text-sm font-semibold text-slate-500">推荐路径</p>
-              <p class="m-0 mt-1 text-xl font-bold text-slate-950">先跑逐项论文质检</p>
+              <p class="m-0 text-sm font-semibold text-slate-500">给 Agent 的一句话</p>
+              <p class="m-0 mt-1 text-xl font-bold text-slate-950">安装 ReviewPrompt 论文审稿技能</p>
             </div>
           </div>
         </div>
@@ -63,19 +68,38 @@ const metadata = {
     </Fragment>
   </Hero>
 
-  <section class="rp-shell">
-    <div class="mx-auto max-w-5xl px-4 md:px-6">
-      <div class="mb-8 text-center">
-        <p class="text-base font-bold uppercase text-secondary">快速选择</p>
-        <h2 class="font-heading text-4xl font-bold tracking-tight text-slate-950 md:text-5xl">按当前任务选择资源</h2>
-      </div>
-      <TaskRecommender />
-    </div>
-  </section>
+  <div id="scenario-entry">
+    <ScenarioEntryGrid
+      title="你现在处在哪个论文阶段？"
+      description="不要先找 Prompt，先选你的任务场景。每个入口会指向一组可以一起使用的 Prompt 套餐。"
+      scenarios={localizedCatalog.scenarios}
+    />
+  </div>
+
+  <PromptPackageGrid
+    title="Prompt 套餐"
+    description="把单条 Prompt、逐项检查点和 Agent 工作流组合成可执行的论文审稿路径。"
+    packages={localizedCatalog.promptPackages}
+    openLabel="查看对应 Prompt"
+    includedLabel="包含能力"
+    outcomeLabel="得到什么"
+  />
+
+  {agentPackage && (
+    <AgentInstallPanel
+      title="把 ReviewPrompt 装进 Codex / Claude Code"
+      subtitle="现在先提供可复制的安装指令和 GitHub Skill 地址；用户把这段话给 Agent，后续就可以在论文项目里无缝调用审稿技能。"
+      noCopyLabel="不用手动复制 Prompt"
+      promptPackage={agentPackage}
+      copyLabel="复制安装指令"
+      copiedLabel="已复制"
+      failedLabel="复制失败"
+    />
+  )}
 
   <ResourceGrid
-    title="当前三个可用资源"
-    description="一个模拟审稿人 Prompt，一个多轮作者自查工作流，一个 Rebuttal 简报 Prompt。"
+    title="底层 Prompt 资源"
+    description="套餐背后仍保留可单独复制和查看的 Prompt，方便用户按需拆开使用。"
     resources={featured.prompts}
   />
 
@@ -85,26 +109,26 @@ const metadata = {
     columns={3}
     items={[
       {
-        title: '作者视角优先',
-        description: '当前资源都服务作者：先判断论文质量，再逐项找问题，最后组织 Rebuttal 沟通材料。',
+        title: '场景入口优先',
+        description: '用户先选择投稿前、模拟审稿、Rebuttal 或 Agent 安装，再进入对应套餐。',
         icon: 'tabler:route',
       },
       {
-        title: '逐项独立检查',
-        description: '论文自查工作流把 7 个小点拆开跑，减少一次性总评带来的泛泛反馈。',
+        title: 'Prompt 组合成路径',
+        description: '套餐把单条 Prompt、独立检查点和工作流说明串起来，比散落卡片更容易上手。',
         icon: 'tabler:shield-check',
       },
       {
-        title: '可插入 Agent',
-        description: '工作流详情页提供 Codex / Claude Code 可复制指令，便于在论文项目里多轮 review。',
+        title: '面向可安装技能',
+        description: '核心卖点前置为把 ReviewPrompt 喂给 Codex / Claude Code，让审稿能力进入论文项目。',
         icon: 'tabler:terminal-2',
       },
     ]}
   />
 
   <CallToAction
-    title="先把作者自查链路打磨清楚"
-    subtitle="从模拟审稿、逐项质检到 rebuttal 简报，先覆盖投稿前后最常见的三类动作。"
-    actions={[{ variant: 'primary', text: '查看提示词库', href: getPermalink('/prompts'), icon: 'tabler:arrow-right' }]}
+    title="下一步是让贡献也变成套餐"
+    subtitle="社区提交的 Prompt 可以先进入待审核区，再被整理进投稿前、Rebuttal 或 Agent 技能包。"
+    actions={[{ variant: 'primary', text: '贡献一个 Prompt', href: getPermalink('/contribute'), icon: 'tabler:arrow-right' }]}
   />
 </Layout>

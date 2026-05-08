@@ -1,0 +1,42 @@
+---
+import CopyButton from './CopyButton.astro';
+import type { PromptPackage } from '~/lib/catalog';
+
+interface Props {
+  title: string;
+  subtitle: string;
+  noCopyLabel: string;
+  promptPackage: PromptPackage;
+  copyLabel: string;
+  copiedLabel: string;
+  failedLabel: string;
+}
+
+const {
+  title,
+  subtitle,
+  noCopyLabel,
+  promptPackage,
+  copyLabel,
+  copiedLabel,
+  failedLabel,
+} = Astro.props;
+const instruction = promptPackage.agentInstruction ?? '';
+const badges = [noCopyLabel, ...promptPackage.outcomes.filter((item) => item !== noCopyLabel)];
+---
+
+<section class="rp-section rp-agent-install">
+  <div class="rp-agent-install__content">
+    <p class="rp-section__eyebrow">Agent Skill</p>
+    <h2>{title}</h2>
+    <p>{subtitle}</p>
+    <div class="rp-agent-install__badges">
+      {badges.map((item) => <span>{item}</span>)}
+    </div>
+  </div>
+  <div class="rp-agent-install__command">
+    <p>{promptPackage.title}</p>
+    <pre><code>{instruction}</code></pre>
+    <CopyButton text={instruction} label={copyLabel} copiedLabel={copiedLabel} failedLabel={failedLabel} />
+  </div>
+</section>

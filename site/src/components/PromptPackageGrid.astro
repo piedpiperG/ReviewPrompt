@@ -1,0 +1,53 @@
+---
+import type { PromptPackage } from '~/lib/catalog';
+import { pathWithBase } from '~/lib/urls';
+
+interface Props {
+  title: string;
+  description: string;
+  packages: PromptPackage[];
+  openLabel: string;
+  includedLabel: string;
+  outcomeLabel: string;
+}
+
+const { title, description, packages, openLabel, includedLabel, outcomeLabel } = Astro.props;
+---
+
+<section class="rp-section rp-packages">
+  <p class="rp-section__eyebrow">Prompt Packages</p>
+  <h2>{title}</h2>
+  <p>{description}</p>
+  <div class="rp-package-grid">
+    {
+      packages.map((promptPackage) => (
+        <article class="rp-package-card" id={promptPackage.slug}>
+          <div>
+            <span class="rp-pill">{promptPackage.scenario}</span>
+            <h3>{promptPackage.title}</h3>
+            <p>{promptPackage.summary}</p>
+          </div>
+          <div>
+            <h4>{includedLabel}</h4>
+            <ul>
+              {promptPackage.includedPrompts.slice(0, 6).map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4>{outcomeLabel}</h4>
+            <div class="rp-package-card__outcomes">
+              {promptPackage.outcomes.map((item) => (
+                <span>{item}</span>
+              ))}
+            </div>
+          </div>
+          <a class="rp-button secondary" href={pathWithBase(promptPackage.href)}>
+            {openLabel}
+          </a>
+        </article>
+      ))
+    }
+  </div>
+</section>

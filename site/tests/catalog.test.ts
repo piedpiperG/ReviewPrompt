@@ -3,6 +3,8 @@ import {
   buildStaticIndex,
   catalog,
   getFeaturedResources,
+  getPromptPackages,
+  getScenarioEntries,
   recommendResources,
 } from '../src/lib/catalog';
 
@@ -85,5 +87,36 @@ describe('catalog resources', () => {
     expect(index.find((item) => item.slug === 'author-check-workflow')?.searchText).toContain(
       'Contribution-evidence alignment',
     );
+  });
+
+  it('groups prompts into scenario-ready packages', () => {
+    const packages = getPromptPackages(catalog);
+    const packageSlugs = packages.map((item) => item.slug);
+    const promptSlugs = new Set(catalog.prompts.map((item) => item.slug));
+
+    expect(packageSlugs).toEqual([
+      'submission-readiness-pack',
+      'reviewer-simulation-pack',
+      'rebuttal-sprint-pack',
+      'agent-skill-install-pack',
+    ]);
+    expect(packages.every((item) => item.promptSlugs.every((slug) => promptSlugs.has(slug)))).toBe(true);
+    expect(packages.find((item) => item.slug === 'agent-skill-install-pack')?.agentInstruction).toContain(
+      'skills/author-paper-check/SKILL.md',
+    );
+  });
+
+  it('maps home page scenarios to prompt packages', () => {
+    const scenarios = getScenarioEntries(catalog);
+    const packageSlugs = new Set(catalog.promptPackages.map((item) => item.slug));
+
+    expect(scenarios.map((item) => item.id)).toEqual([
+      'before-submission',
+      'simulate-review',
+      'after-reviews',
+      'install-agent-skill',
+    ]);
+    expect(scenarios.every((item) => packageSlugs.has(item.packageSlug))).toBe(true);
+    expect(scenarios.find((item) => item.id === 'install-agent-skill')?.title).toContain('Codex');
   });
 });

@@ -50,8 +50,33 @@ export interface PromptResource {
   skillWorkflow?: SkillWorkflow;
 }
 
+export interface PromptPackage {
+  slug: string;
+  title: string;
+  summary: string;
+  scenario: string;
+  promptSlugs: string[];
+  includedPrompts: string[];
+  outcomes: string[];
+  href: string;
+  agentInstruction?: string;
+  skillUrl?: string;
+}
+
+export interface ScenarioEntry {
+  id: string;
+  title: string;
+  summary: string;
+  stage: string;
+  packageSlug: string;
+  href: string;
+  cta: string;
+}
+
 export interface Catalog {
   prompts: PromptResource[];
+  promptPackages: PromptPackage[];
+  scenarios: ScenarioEntry[];
 }
 
 const reviewerImitationPrompt = `You are a strict and professional INTERSPEECH reviewer.
@@ -162,6 +187,15 @@ Return a concise shareable document with:
 4. Evidence and rationale behind each response.
 5. Missing evidence or risky claims.
 6. Questions that need advisor or coauthor input.`;
+
+const authorPaperCheckSkillUrl = 'https://github.com/piedpiperG/ReviewPrompt/blob/main/skills/author-paper-check/SKILL.md';
+const fullPaperReviewSkillUrl = 'https://github.com/piedpiperG/ReviewPrompt/blob/main/skills/full-paper-review/SKILL.md';
+
+const installAgentSkillInstruction = `Install ReviewPrompt's paper review skills from these URLs:
+- ${authorPaperCheckSkillUrl}
+- ${fullPaperReviewSkillUrl}
+
+After installation, use author-paper-check for multi-pass author self-review and full-paper-review for structured reviewer-style assessment inside the current paper project.`;
 
 export const catalog: Catalog = {
   prompts: [
@@ -305,6 +339,116 @@ export const catalog: Catalog = {
         'The model must not invent reviewer comments, experiments, or author commitments.',
       ],
       promptText: rebuttalBriefingPrompt,
+    },
+  ],
+  promptPackages: [
+    {
+      slug: 'submission-readiness-pack',
+      title: 'Submission Readiness Pack',
+      summary:
+        'A pre-submission package for authors who want concrete rejection risks before sending the paper out.',
+      scenario: 'Before submission',
+      promptSlugs: ['author-check-workflow', 'reviewer-imitation-quality-check'],
+      includedPrompts: [
+        'Basic writing errors',
+        'Keyword consistency',
+        'Citation audit',
+        'Experiment setup audit',
+        'Figure/table consistency',
+        'Narrative logic consistency',
+        'Contribution-evidence alignment',
+        'Reviewer-style acceptance-risk simulation',
+      ],
+      outcomes: ['Ranked acceptance risks', 'Evidence-backed fix list', 'Author-check report'],
+      href: '/prompts/author-check-workflow/',
+    },
+    {
+      slug: 'reviewer-simulation-pack',
+      title: 'Reviewer Simulation Pack',
+      summary:
+        'Stress-test a manuscript from reviewer, skeptical reviewer, and meta-review perspectives before submission.',
+      scenario: 'Review pressure test',
+      promptSlugs: ['reviewer-imitation-quality-check', 'author-check-workflow'],
+      includedPrompts: [
+        'Strict reviewer simulation',
+        'Acceptance-risk scoring',
+        'Questions reviewers may ask',
+        'Contribution-evidence alignment',
+      ],
+      outcomes: ['Reviewer objections', 'Score and confidence estimate', 'Priority revision plan'],
+      href: '/prompts/reviewer-imitation-quality-check/',
+    },
+    {
+      slug: 'rebuttal-sprint-pack',
+      title: 'Rebuttal Sprint Pack',
+      summary:
+        'Turn reviews into a concise briefing, risky-claim checklist, and response plan for advisors or coauthors.',
+      scenario: 'After reviews arrive',
+      promptSlugs: ['rebuttal-briefing', 'author-check-workflow'],
+      includedPrompts: [
+        'Review summary',
+        'Original reviewer excerpt preservation',
+        'Current rebuttal briefing',
+        'Missing evidence and risky claims',
+      ],
+      outcomes: ['Shareable rebuttal brief', 'Advisor decision list', 'Evidence gaps'],
+      href: '/prompts/rebuttal-briefing/',
+    },
+    {
+      slug: 'agent-skill-install-pack',
+      title: 'Agent Skill Install Pack',
+      summary:
+        'Give Codex or Claude Code one ReviewPrompt URL so it can install or follow reusable paper-review skills.',
+      scenario: 'Agent-native workflow',
+      promptSlugs: ['author-check-workflow', 'reviewer-imitation-quality-check', 'rebuttal-briefing'],
+      includedPrompts: [
+        'author-paper-check skill',
+        'full-paper-review skill',
+        'Multi-pass prompt workflow',
+        'Rebuttal briefing prompt',
+      ],
+      outcomes: ['No manual prompt copying', 'Reusable paper-review commands', 'Workspace-aware review reports'],
+      href: '/prompts/author-check-workflow/',
+      agentInstruction: installAgentSkillInstruction,
+      skillUrl: authorPaperCheckSkillUrl,
+    },
+  ],
+  scenarios: [
+    {
+      id: 'before-submission',
+      title: 'I am about to submit and want to know what may get rejected',
+      summary: 'Run the submission readiness package to find writing, citation, experiment, logic, and evidence risks.',
+      stage: 'Before submission',
+      packageSlug: 'submission-readiness-pack',
+      href: '#submission-readiness-pack',
+      cta: 'Open readiness pack',
+    },
+    {
+      id: 'simulate-review',
+      title: 'I want realistic reviewer objections before submission',
+      summary: 'Use the reviewer simulation package to estimate acceptance risk and likely reviewer questions.',
+      stage: 'Pressure test',
+      packageSlug: 'reviewer-simulation-pack',
+      href: '#reviewer-simulation-pack',
+      cta: 'Simulate reviewers',
+    },
+    {
+      id: 'after-reviews',
+      title: 'I received reviews and need a rebuttal plan',
+      summary: 'Build a concise rebuttal briefing with original review excerpts, evidence gaps, and advisor questions.',
+      stage: 'Rebuttal',
+      packageSlug: 'rebuttal-sprint-pack',
+      href: '#rebuttal-sprint-pack',
+      cta: 'Prepare rebuttal',
+    },
+    {
+      id: 'install-agent-skill',
+      title: 'I want Codex / Claude Code to install the skill',
+      summary: 'Give the agent one ReviewPrompt URL so paper-review prompts become reusable skills in the workspace.',
+      stage: 'Agent install',
+      packageSlug: 'agent-skill-install-pack',
+      href: '#agent-skill-install-pack',
+      cta: 'Copy install instruction',
     },
   ],
 };

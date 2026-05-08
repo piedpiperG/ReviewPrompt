@@ -2,15 +2,27 @@ import {
   catalog,
   type Catalog,
   type PromptKind,
+  type PromptPackage,
   type PromptResource,
   type RecommendationCriteria,
   type ResourceType,
+  type ScenarioEntry,
   type SkillWorkflow,
   type WorkflowStep,
 } from '../data/catalog';
 
 export { catalog };
-export type { Catalog, PromptKind, PromptResource, RecommendationCriteria, ResourceType, SkillWorkflow, WorkflowStep };
+export type {
+  Catalog,
+  PromptKind,
+  PromptPackage,
+  PromptResource,
+  RecommendationCriteria,
+  ResourceType,
+  ScenarioEntry,
+  SkillWorkflow,
+  WorkflowStep,
+};
 
 export interface FeaturedResources {
   prompts: PromptResource[];
@@ -34,6 +46,14 @@ export function getFeaturedResources(source: Catalog = catalog): FeaturedResourc
   return {
     prompts: source.prompts.filter((item) => item.featured),
   };
+}
+
+export function getPromptPackages(source: Catalog = catalog): PromptPackage[] {
+  return source.promptPackages;
+}
+
+export function getScenarioEntries(source: Catalog = catalog): ScenarioEntry[] {
+  return source.scenarios;
 }
 
 export function recommendResources(

@@ -38,7 +38,17 @@ describe('localization', () => {
       '作者逐项论文质检工作流',
       'Rebuttal 简报整理',
     ]);
-    expect(Object.keys(zhCatalog)).toEqual(['prompts']);
+    expect(Object.keys(zhCatalog)).toEqual(['prompts', 'promptPackages', 'scenarios']);
+  });
+
+  it('localizes prompt packages and scenario entries for the home page', () => {
+    const zhCatalog = getLocalizedCatalog(catalog, 'zh');
+    const enCatalog = getLocalizedCatalog(catalog, 'en');
+
+    expect(zhCatalog.promptPackages.map((item) => item.title)).toContain('投稿前体检包');
+    expect(zhCatalog.scenarios.map((item) => item.title)).toContain('我准备投稿，想知道哪里会被拒');
+    expect(enCatalog.promptPackages.map((item) => item.title)).toContain('Submission Readiness Pack');
+    expect(enCatalog.scenarios.map((item) => item.title)).toContain('I want Codex / Claude Code to install the skill');
   });
 
   it('localizes catalog links for English pages', () => {
