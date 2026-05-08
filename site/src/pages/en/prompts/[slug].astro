@@ -1,0 +1,31 @@
+---
+import PromptDetail from '../../../components/PromptDetail.astro';
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+import { catalog } from '../../../lib/catalog';
+import { getLocalizedCatalog } from '../../../lib/localization';
+
+export function getStaticPaths() {
+  return catalog.prompts.map((prompt) => ({ params: { slug: prompt.slug } }));
+}
+
+const { slug } = Astro.params;
+const prompt = getLocalizedCatalog(catalog, 'en').prompts.find((item) => item.slug === slug);
+
+if (!prompt) {
+  throw new Error(`Unknown prompt slug: ${slug}`);
+}
+---
+
+<SiteLayout title={prompt.title} description={prompt.summary} locale="en">
+  <section class="aw-page-hero">
+    <div class="aw-container">
+      <p class="aw-eyebrow">Prompt</p>
+      <h1>{prompt.title}</h1>
+      <p>{prompt.summary}</p>
+    </div>
+  </section>
+
+  <section class="aw-container aw-section compact">
+    <PromptDetail slug={prompt.slug} />
+  </section>
+</SiteLayout>

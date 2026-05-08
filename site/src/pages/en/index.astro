@@ -1,0 +1,84 @@
+---
+import ResourceGrid from '../../components/ResourceGrid.astro';
+import TaskRecommender from '../../components/TaskRecommender.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { catalog, getFeaturedResources } from '../../lib/catalog';
+import { pathWithBase } from '../../lib/urls';
+
+const featured = getFeaturedResources(catalog);
+---
+
+<SiteLayout title="AI Review Commons" description="Bilingual prompts for AI paper review." locale="en">
+  <section class="aw-hero">
+    <div class="aw-hero__bg" aria-hidden="true"></div>
+    <div class="aw-container aw-hero__grid">
+      <div class="aw-hero__copy">
+        <p class="aw-eyebrow">AI Review Commons</p>
+        <h1>A clean prompt tool for AI paper review.</h1>
+        <p class="aw-hero__lead">
+          The site currently focuses on AI papers. Choose author or reviewer, then choose full paper review or rebuttal,
+          and copy a ready prompt.
+        </p>
+        <div class="aw-actions">
+          <a class="rp-button" href={pathWithBase('/en/prompts/')}>Choose a Prompt</a>
+          <a class="rp-button secondary" href={pathWithBase('/en/contribute/')}>Submit a Prompt</a>
+        </div>
+      </div>
+      <div class="aw-hero__panel" aria-label="ReviewPrompt current scope">
+        <div class="aw-prompt-window">
+          <div class="aw-window-bar"><span></span><span></span><span></span></div>
+          <p class="aw-window-kicker">Prompt Scope</p>
+          <h2>2 roles × 2 tasks</h2>
+          <div class="aw-token-row">
+            <span>Author</span>
+            <span>Reviewer</span>
+            <span>Full paper</span>
+            <span>Rebuttal</span>
+            <span>AI</span>
+          </div>
+          <div class="aw-window-line"></div>
+          <div class="aw-window-line short"></div>
+          <div class="aw-window-line muted"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="aw-container aw-band">
+    <div class="aw-section-heading">
+      <p class="aw-eyebrow">Quick Start</p>
+      <h2>Find a copy-ready prompt in two steps</h2>
+    </div>
+    <TaskRecommender />
+  </section>
+
+  <ResourceGrid
+    title="Only Two Prompts For Now"
+    description="Full paper review and rebuttal are the first two core tasks."
+    resources={featured.prompts}
+  />
+
+  <section class="aw-container aw-section">
+    <div class="aw-section-heading">
+      <p class="aw-eyebrow">Principles</p>
+      <h2>Keep the surface small and make prompts useful first</h2>
+    </div>
+    <div class="aw-feature-grid">
+      <article class="aw-feature-card">
+        <span>01</span>
+        <h3>Core path only</h3>
+        <p>The first screen is only about choosing a role, choosing a task, and copying prompts.</p>
+      </article>
+      <article class="aw-feature-card">
+        <span>02</span>
+        <h3>Evidence first</h3>
+        <p>Prompts ask the model to use provided paper evidence and avoid fabricated citations or venue rules.</p>
+      </article>
+      <article class="aw-feature-card">
+        <span>03</span>
+        <h3>Bilingual</h3>
+        <p>Chinese is the default version, with an English version using the same structure.</p>
+      </article>
+    </div>
+  </section>
+</SiteLayout>

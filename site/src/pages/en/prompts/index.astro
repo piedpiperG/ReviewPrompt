@@ -1,0 +1,24 @@
+---
+import ResourceGrid from '../../../components/ResourceGrid.astro';
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+import { catalog } from '../../../lib/catalog';
+---
+
+<SiteLayout title="Prompt Library" description="Only the full paper and rebuttal prompts are shown for now." locale="en">
+  <section class="aw-page-hero">
+    <div class="aw-container">
+      <p class="aw-eyebrow">Prompt Library</p>
+      <h1>Prompt Library</h1>
+      <p>Choose a role and task, then copy the prompt. The current domain is fixed to artificial intelligence.</p>
+    </div>
+  </section>
+
+  <ResourceGrid resources={catalog.prompts} />
+
+  <section class="aw-container aw-section compact">
+    <div class="aw-note">
+      <strong>Current Scope</strong>
+      <p>This page starts with two common actions: full paper review and rebuttal response.</p>
+    </div>
+  </section>
+</SiteLayout>

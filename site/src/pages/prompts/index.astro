@@ -1,0 +1,24 @@
+---
+import ResourceGrid from '../../components/ResourceGrid.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { catalog } from '../../lib/catalog';
+---
+
+<SiteLayout title="提示词库" description="只保留完整论文和 Rebuttal 两个核心提示词。" locale="zh">
+  <section class="aw-page-hero">
+    <div class="aw-container">
+      <p class="aw-eyebrow">Prompt Library</p>
+      <h1>提示词库</h1>
+      <p>选择身份和任务后复制即可使用。当前领域固定为人工智能，后续再扩展更多任务。</p>
+    </div>
+  </section>
+
+  <ResourceGrid resources={catalog.prompts} />
+
+  <section class="aw-container aw-section compact">
+    <div class="aw-note">
+      <strong>当前范围</strong>
+      <p>页面先服务两个高频动作：完整论文审稿、Rebuttal 回复。</p>
+    </div>
+  </section>
+</SiteLayout>
