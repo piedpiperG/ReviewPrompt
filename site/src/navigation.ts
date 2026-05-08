@@ -56,12 +56,14 @@ export function getFooterData(locale: Locale = 'zh') {
         title: isZh ? '提示词' : 'Prompts',
         links: isZh
           ? [
-              { text: '完整论文审稿', href: getPermalink('/prompts/full-structured-peer-review') },
-              { text: 'Rebuttal 回复起草', href: getPermalink('/prompts/rebuttal-response-drafting') },
+              { text: '模拟审稿人检查', href: getPermalink('/prompts/reviewer-imitation-quality-check') },
+              { text: '逐项论文质检', href: getPermalink('/prompts/author-check-workflow') },
+              { text: 'Rebuttal 简报', href: getPermalink('/prompts/rebuttal-briefing') },
             ]
           : [
-              { text: 'Full Paper Review', href: getPermalink('/en/prompts/full-structured-peer-review') },
-              { text: 'Rebuttal Response', href: getPermalink('/en/prompts/rebuttal-response-drafting') },
+              { text: 'Reviewer Simulation', href: getPermalink('/en/prompts/reviewer-imitation-quality-check') },
+              { text: 'Multi-pass Check', href: getPermalink('/en/prompts/author-check-workflow') },
+              { text: 'Rebuttal Briefing', href: getPermalink('/en/prompts/rebuttal-briefing') },
             ],
       },
       {

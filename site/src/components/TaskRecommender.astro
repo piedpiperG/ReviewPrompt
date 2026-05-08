@@ -7,18 +7,11 @@ import { pathWithBase } from '../lib/urls';
 const locale = getLocaleFromPathname(Astro.url.pathname);
 const labels = t(locale);
 const localizedCatalog = getLocalizedCatalog(catalog, locale);
-const choices =
-  locale === 'zh'
-    ? {
-        roles: ['作者', '审稿人'],
-        tasks: ['完整论文', 'Rebuttal'],
-        domain: '人工智能',
-      }
-    : {
-        roles: ['Author', 'Reviewer'],
-        tasks: ['Full paper review', 'Rebuttal'],
-        domain: 'Artificial Intelligence',
-      };
+const choices = {
+  role: localizedCatalog.prompts[0]?.roles[0] ?? '',
+  tasks: localizedCatalog.prompts.map((prompt) => prompt.tasks[0]),
+  domain: localizedCatalog.prompts[0]?.domains[0] ?? '',
+};
 
 const prompts = localizedCatalog.prompts.map((prompt) => ({
   ...prompt,
@@ -30,7 +23,7 @@ const prompts = localizedCatalog.prompts.map((prompt) => ({
   class="rp-section rp-recommender"
   data-task-recommender
   data-prompts={JSON.stringify(prompts)}
-  data-initial-role={choices.roles[0]}
+  data-initial-role={choices.role}
   data-initial-task={choices.tasks[0]}
   data-domain={choices.domain}
   data-ui-labels={JSON.stringify({
@@ -45,26 +38,7 @@ const prompts = localizedCatalog.prompts.map((prompt) => ({
   <h2>{labels.recommenderTitle}</h2>
   <p>{labels.recommenderDescription}</p>
 
-  <div class="rp-choice-grid" aria-label={labels.recommenderTitle}>
-    <div class="rp-choice-group">
-      <h3>{labels.role}</h3>
-      <div class="rp-segmented" role="group" aria-label={labels.role}>
-        {
-          choices.roles.map((role, index) => (
-            <button
-              class="rp-segment"
-              type="button"
-              data-field="role"
-              data-value={role}
-              aria-pressed={index === 0 ? 'true' : 'false'}
-            >
-              {role}
-            </button>
-          ))
-        }
-      </div>
-    </div>
-
+  <div class="rp-choice-grid single" aria-label={labels.recommenderTitle}>
     <div class="rp-choice-group">
       <h3>{labels.task}</h3>
       <div class="rp-segmented" role="group" aria-label={labels.task}>
@@ -133,12 +107,8 @@ const prompts = localizedCatalog.prompts.map((prompt) => ({
         .replaceAll("'", '&#039;');
 
     const findPrompt = () =>
-      prompts.find(
-        (prompt) =>
-          includes(prompt.roles, state.role) &&
-          includes(prompt.tasks, state.task) &&
-          includes(prompt.domains, state.domain),
-      ) ?? prompts[0];
+      prompts.find((prompt) => includes(prompt.tasks, state.task) && includes(prompt.domains, state.domain)) ??
+      prompts[0];
 
     const render = () => {
       if (!(result instanceof HTMLElement)) return;

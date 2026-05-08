@@ -1,0 +1,3 @@
+功能：Rebuttal文档，用于分析问题，写rebuttal，并总结出一个简要文档供老师/coauthor共享查看
+
+我现在希望你了解一下这篇论文/reviews/当前rebuttal，之后总结一个文档，精炼的说一下各个reviews的主要意见（附带英文原文，增加可信度），给出当前rebuttal正文，给出rebuttal的理由来。供我给我老师检查。

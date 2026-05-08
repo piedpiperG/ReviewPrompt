@@ -1,13 +1,16 @@
 import {
   catalog,
   type Catalog,
+  type PromptKind,
   type PromptResource,
   type RecommendationCriteria,
   type ResourceType,
+  type SkillWorkflow,
+  type WorkflowStep,
 } from '../data/catalog';
 
 export { catalog };
-export type { Catalog, PromptResource, RecommendationCriteria, ResourceType };
+export type { Catalog, PromptKind, PromptResource, RecommendationCriteria, ResourceType, SkillWorkflow, WorkflowStep };
 
 export interface FeaturedResources {
   prompts: PromptResource[];
@@ -53,12 +56,17 @@ export function buildStaticIndex(source: Catalog = catalog): StaticIndexItem[] {
     searchText: [
       item.title,
       item.summary,
+      item.useCase,
       item.roles.join(' '),
       item.tasks.join(' '),
       item.domains.join(' '),
       item.inputFormat.join(' '),
       item.outputFormat.join(' '),
       item.limitations.join(' '),
+      ...(item.workflowSteps ?? []).flatMap((step) => [step.title, step.summary, step.promptText]),
+      item.skillWorkflow?.title ?? '',
+      item.skillWorkflow?.summary ?? '',
+      item.skillWorkflow?.agentInstruction ?? '',
     ].join(' '),
   }));
 }

@@ -13,8 +13,9 @@ const { resource } = Astro.props;
 const locale = getLocaleFromPathname(Astro.url.pathname);
 const labels = t(locale);
 const statusLabel = 'statusLabel' in resource ? String(resource.statusLabel) : resource.status;
+const kindLabel = resource.kind === 'workflow' ? labels.promptWorkflow : labels.prompt;
 const primaryTags = [
-  labels.prompt,
+  kindLabel,
   statusLabel,
   ...resource.roles.slice(0, 2),
   ...resource.tasks.slice(0, 1),

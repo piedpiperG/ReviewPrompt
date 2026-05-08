@@ -11,7 +11,7 @@ import { getPermalink } from '~/utils/permalinks';
 const featured = getFeaturedResources(catalog);
 const metadata = {
   title: 'AI Review Commons',
-  description: '面向人工智能论文审稿的双语提示词库。',
+  description: '面向作者的论文质检、模拟审稿和 Rebuttal 简报提示词库。',
 };
 ---
 
@@ -29,7 +29,7 @@ const metadata = {
     </Fragment>
 
     <Fragment slot="subtitle">
-      当前只服务人工智能论文场景。选择作者或审稿人，再选择完整论文或 Rebuttal，直接复制可用提示词。
+      当前围绕三个真实资源重排：模拟审稿人评估论文质量、逐项多轮自查论文问题、整理 Rebuttal 简报。
     </Fragment>
 
     <Fragment slot="image">
@@ -42,20 +42,20 @@ const metadata = {
         <div class="grid gap-5 md:grid-cols-[0.8fr_1.2fr]">
           <div class="rounded-2xl bg-slate-950 p-5 text-teal-50">
             <p class="mb-3 text-sm font-bold uppercase text-teal-300">Prompt Scope</p>
-            <h2 class="m-0 text-3xl font-bold leading-tight text-white">2 种身份 × 2 个任务</h2>
+            <h2 class="m-0 text-3xl font-bold leading-tight text-white">3 个作者工作台</h2>
             <div class="mt-5 flex flex-wrap gap-2 text-sm">
-              <span class="rounded-full bg-white/10 px-3 py-1">作者</span>
-              <span class="rounded-full bg-white/10 px-3 py-1">审稿人</span>
-              <span class="rounded-full bg-white/10 px-3 py-1">完整论文</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">模拟审稿</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">逐项质检</span>
               <span class="rounded-full bg-white/10 px-3 py-1">Rebuttal</span>
+              <span class="rounded-full bg-white/10 px-3 py-1">Skill 工作流</span>
             </div>
           </div>
           <div class="space-y-3 rounded-2xl bg-teal-50 p-5">
             <div class="h-4 w-4/5 rounded-full bg-teal-200"></div>
             <div class="h-4 w-3/5 rounded-full bg-teal-100"></div>
             <div class="mt-6 rounded-xl border border-teal-200 bg-white p-4">
-              <p class="m-0 text-sm font-semibold text-slate-500">推荐提示词</p>
-              <p class="m-0 mt-1 text-xl font-bold text-slate-950">完整论文审稿</p>
+              <p class="m-0 text-sm font-semibold text-slate-500">推荐路径</p>
+              <p class="m-0 mt-1 text-xl font-bold text-slate-950">先跑逐项论文质检</p>
             </div>
           </div>
         </div>
@@ -67,44 +67,44 @@ const metadata = {
     <div class="mx-auto max-w-5xl px-4 md:px-6">
       <div class="mb-8 text-center">
         <p class="text-base font-bold uppercase text-secondary">快速选择</p>
-        <h2 class="font-heading text-4xl font-bold tracking-tight text-slate-950 md:text-5xl">两步找到可复制的提示词</h2>
+        <h2 class="font-heading text-4xl font-bold tracking-tight text-slate-950 md:text-5xl">按当前任务选择资源</h2>
       </div>
       <TaskRecommender />
     </div>
   </section>
 
   <ResourceGrid
-    title="当前只保留两个提示词"
-    description="完整论文审稿和 Rebuttal 是第一版核心任务。"
+    title="当前三个可用资源"
+    description="一个模拟审稿人 Prompt，一个多轮作者自查工作流，一个 Rebuttal 简报 Prompt。"
     resources={featured.prompts}
   />
 
   <Features
     tagline="原则"
-    title="少功能，先把提示词体验做好"
+    title="按真实使用场景组织"
     columns={3}
     items={[
       {
-        title: '只保留核心路径',
-        description: '首页只留下身份、任务和复制提示词，避免多余模块分散注意力。',
+        title: '作者视角优先',
+        description: '当前资源都服务作者：先判断论文质量，再逐项找问题，最后组织 Rebuttal 沟通材料。',
         icon: 'tabler:route',
       },
       {
-        title: '证据优先',
-        description: '提示词要求使用用户提供的论文内容，避免编造引用、实验和会议规则。',
+        title: '逐项独立检查',
+        description: '论文自查工作流把 7 个小点拆开跑，减少一次性总评带来的泛泛反馈。',
         icon: 'tabler:shield-check',
       },
       {
-        title: '中英双语',
-        description: '中文是默认版本，英文版本保留同样的信息架构。',
-        icon: 'tabler:language',
+        title: '可插入 Agent',
+        description: '工作流详情页提供 Codex / Claude Code 可复制指令，便于在论文项目里多轮 review。',
+        icon: 'tabler:terminal-2',
       },
     ]}
   />
 
   <CallToAction
-    title="先把两个高频任务打磨清楚"
-    subtitle="后续再逐步加入更多领域、更多任务和更完整的协作流程。"
+    title="先把作者自查链路打磨清楚"
+    subtitle="从模拟审稿、逐项质检到 rebuttal 简报，先覆盖投稿前后最常见的三类动作。"
     actions={[{ variant: 'primary', text: '查看提示词库', href: getPermalink('/prompts'), icon: 'tabler:arrow-right' }]}
   />
 </Layout>

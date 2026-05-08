@@ -6,7 +6,7 @@ import { catalog } from '~/lib/catalog';
 
 const metadata = {
   title: '提示词库',
-  description: '只保留完整论文和 Rebuttal 两个核心提示词。',
+  description: '作者自查、逐项论文质检和 Rebuttal 简报资源。',
 };
 ---
 
@@ -14,7 +14,7 @@ const metadata = {
   <HeroText
     tagline="Prompt Library"
     title="提示词库"
-    subtitle="选择身份和任务后复制即可使用。当前领域固定为人工智能，后续再扩展更多任务。"
+    subtitle="当前按三个真实资源组织：模拟审稿、逐项质检、Rebuttal 简报。"
   />
 
   <ResourceGrid resources={catalog.prompts} />
@@ -22,7 +22,7 @@ const metadata = {
   <section class="mx-auto max-w-5xl px-4 py-10 md:px-6">
     <div class="rounded-3xl border border-teal-100 bg-teal-50 p-6">
       <strong class="text-slate-950">当前范围</strong>
-      <p class="mb-0 mt-2 text-muted">页面先服务两个高频动作：完整论文审稿、Rebuttal 回复。</p>
+      <p class="mb-0 mt-2 text-muted">页面先服务作者侧高频动作：判断论文质量、系统找问题、整理 rebuttal 沟通材料。</p>
     </div>
   </section>
 </Layout>

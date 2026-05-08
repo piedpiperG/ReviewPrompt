@@ -2,7 +2,7 @@
 
 Open prompts for AI-assisted peer review.
 
-ReviewPrompt is not a prompt dump. The current website focuses on two clear prompt flows for AI papers: full paper review and rebuttal.
+ReviewPrompt is not a prompt dump. The current website focuses on three author-side resources for AI papers: reviewer imitation, multi-pass paper checking, and rebuttal briefing.
 
 ## Product Direction
 
@@ -10,8 +10,8 @@ The source requirement document is [`guide_basement.md`](guide_basement.md). The
 
 - GitHub Pages + AstroWind-based Astro website.
 - AstroWind layouts, widgets, UI components, Tailwind config, and integrations as the site base.
-- ReviewPrompt-specific pages backed by TypeScript prompt data.
-- Simplified prompt catalog for authors and reviewers.
+- ReviewPrompt-specific pages backed by TypeScript prompt data and local prompt source files.
+- Simplified author-side prompt catalog.
 - Bilingual Chinese / English website, with Chinese as the default locale and English under `/en/`.
 - GitHub Issue Forms for community submissions.
 - GitHub Actions deployment.
@@ -22,7 +22,8 @@ The source requirement document is [`guide_basement.md`](guide_basement.md). The
 .
 ├── docs/                    # Product specs and development plans
 ├── site/                    # Astro website
-├── data/                    # Schemas, taxonomy, and future static exports
+├── data/                    # Prompt sources, schemas, taxonomy, and future static exports
+├── skills/                  # Agent skill workflows
 ├── .github/                 # Issue Forms and deployment automation
 └── guide_basement.md        # Original requirement and product strategy
 ```
@@ -47,10 +48,11 @@ npm --prefix site run build
 
 - Task-oriented home page.
 - Prompt Library.
-- Author and reviewer modes.
-- Full paper and rebuttal tasks.
+- Reviewer imitation prompt for author-side quality checks.
+- Multi-pass author paper check workflow with seven independent checkpoint prompts.
+- Codex / Claude Code skill workflow for repeated paper review.
+- Rebuttal briefing prompt for advisor and coauthor review.
 - Contribution entry.
-- Workflow and Skill pages are intentionally hidden for now.
 
 ## UI Reference
 

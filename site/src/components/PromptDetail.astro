@@ -49,6 +49,61 @@ if (!prompt) {
     <pre class="rp-code-block"><code>{prompt.promptText}</code></pre>
   </section>
 
+  {
+    prompt.workflowSteps && prompt.workflowSteps.length > 0 && (
+      <section class="rp-detail__panel">
+        <h2>{labels.workflowSteps}</h2>
+        <div class="rp-workflow-steps">
+          {prompt.workflowSteps.map((step, index) => (
+            <article class="rp-step-card">
+              <div class="rp-step-card__header">
+                <span class="rp-step-number">{String(index + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3>{step.title}</h3>
+                  <p>{step.summary}</p>
+                </div>
+              </div>
+              <CopyButton
+                text={step.promptText}
+                label={labels.copyStepPrompt}
+                copiedLabel={labels.stepPromptCopied}
+                failedLabel={labels.copyFailed}
+              />
+              <pre class="rp-code-block"><code>{step.promptText}</code></pre>
+            </article>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    prompt.skillWorkflow && (
+      <section class="rp-detail__panel rp-skill-workflow">
+        <h2>{labels.skillWorkflow}</h2>
+        <p>{prompt.skillWorkflow.summary}</p>
+        <div class="rp-card__meta">
+          <span class="rp-pill">{labels.supportedTools}</span>
+          {prompt.skillWorkflow.tools.map((tool) => (
+            <span class="rp-pill">{tool}</span>
+          ))}
+        </div>
+
+        <h3>{prompt.skillWorkflow.title}</h3>
+        <ul>{prompt.skillWorkflow.setupSteps.map((item) => <li>{item}</li>)}</ul>
+
+        <h3>{labels.agentInstruction}</h3>
+        <CopyButton
+          text={prompt.skillWorkflow.agentInstruction}
+          label={labels.copyInstruction}
+          copiedLabel={labels.instructionCopied}
+          failedLabel={labels.copyFailed}
+        />
+        <pre class="rp-code-block"><code>{prompt.skillWorkflow.agentInstruction}</code></pre>
+      </section>
+    )
+  }
+
   <section class="rp-detail__panel">
     <h2>{labels.inputFormat}</h2>
     <ul>{prompt.inputFormat.map((item) => <li>{item}</li>)}</ul>
@@ -68,6 +123,7 @@ if (!prompt) {
     <h2>{labels.metadata}</h2>
     <ul>
       <li>{labels.source}: {prompt.source}</li>
+      <li>{labels.sourceFile}: {prompt.sourceFile}</li>
       <li>{labels.license}: {prompt.license}</li>
       <li>{labels.contributor}: {prompt.contributor}</li>
       <li>{labels.models}: {prompt.modelCompatibility.join(', ')}</li>
