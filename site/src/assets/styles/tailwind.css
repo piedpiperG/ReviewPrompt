@@ -157,7 +157,18 @@
   }
 
   .rp-detail {
-    @apply grid gap-5;
+    @apply mx-auto grid w-full max-w-5xl gap-5;
+    min-width: 0;
+  }
+
+  .rp-detail-shell {
+    @apply mx-auto w-full max-w-5xl px-4 py-10 md:px-6;
+    min-width: 0;
+  }
+
+  .rp-detail__panel,
+  .rp-step-card {
+    min-width: 0;
   }
 
   .rp-detail__panel h2 {
@@ -173,7 +184,7 @@
   }
 
   .rp-code-block {
-    @apply overflow-auto rounded-2xl bg-slate-950 p-5 text-sm leading-7 text-slate-100;
+    @apply max-w-full overflow-auto rounded-2xl bg-slate-950 p-5 text-sm leading-7 text-slate-100;
   }
 
   .rp-workflow-steps {

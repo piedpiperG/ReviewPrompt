@@ -75,9 +75,12 @@ const prompts = localizedCatalog.prompts.map((prompt) => ({
     promptText: string;
   }
 
-  const root = document.querySelector('[data-task-recommender]');
+  const boundRecommenders = new WeakSet<HTMLElement>();
 
-  if (root instanceof HTMLElement) {
+  const initTaskRecommender = (root: HTMLElement) => {
+    if (boundRecommenders.has(root)) return;
+    boundRecommenders.add(root);
+
     const prompts = JSON.parse(root.dataset.prompts ?? '[]') as ClientPrompt[];
     const result = root.querySelector('[data-result]');
     const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-field]'));
@@ -153,5 +156,14 @@ const prompts = localizedCatalog.prompts.map((prompt) => ({
     });
 
     render();
-  }
+  };
+
+  const initTaskRecommenders = () => {
+    document
+      .querySelectorAll<HTMLElement>('[data-task-recommender]')
+      .forEach((root) => initTaskRecommender(root));
+  };
+
+  initTaskRecommenders();
+  document.addEventListener('astro:page-load', initTaskRecommenders);
 </script>
