@@ -212,6 +212,104 @@
   .rp-skill-workflow .rp-code-block {
     @apply mt-4;
   }
+
+  .rp-contribute {
+    @apply mx-auto grid w-full max-w-6xl gap-6 px-4 py-10 md:px-6 lg:grid-cols-[1.05fr_0.95fr];
+  }
+
+  .rp-contribute__panel {
+    @apply rounded-3xl border border-gray-200 bg-white p-6 shadow-xl shadow-gray-200/60 md:p-7;
+    min-width: 0;
+  }
+
+  .rp-contribute__form-panel {
+    @apply grid gap-6;
+  }
+
+  .rp-contribute__eyebrow {
+    @apply m-0 text-sm font-bold uppercase tracking-wide text-teal-700;
+  }
+
+  .rp-contribute__form-panel h2,
+  .rp-contribute__preview-header h2 {
+    @apply m-0 text-3xl font-bold tracking-tight text-slate-950 md:text-4xl;
+  }
+
+  .rp-contribute__form-panel > p {
+    @apply m-0 text-lg leading-8 text-muted;
+  }
+
+  .rp-contribute__form {
+    @apply grid gap-4;
+  }
+
+  .rp-contribute__choice-row {
+    @apply grid gap-4 md:grid-cols-3;
+  }
+
+  .rp-contribute__choice-group {
+    @apply grid gap-2;
+  }
+
+  .rp-contribute__choice-group label,
+  .rp-contribute__field span {
+    @apply text-base font-bold text-slate-950;
+  }
+
+  .rp-contribute__choices {
+    @apply grid gap-2;
+  }
+
+  .rp-choice-chip {
+    @apply min-h-12 cursor-pointer rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-left text-base font-semibold text-slate-600 transition hover:border-teal-200 hover:bg-teal-50;
+  }
+
+  .rp-choice-chip[aria-pressed='true'] {
+    @apply border-slate-950 bg-slate-950 text-white;
+  }
+
+  .rp-contribute__field {
+    @apply grid gap-2;
+  }
+
+  .rp-input,
+  .rp-textarea {
+    @apply w-full rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-base leading-7 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-teal-400 focus:bg-white focus:ring-4 focus:ring-teal-100;
+  }
+
+  .rp-textarea {
+    @apply resize-y;
+  }
+
+  .rp-contribute__preview-panel {
+    @apply sticky top-24 flex max-h-[calc(100vh-8rem)] flex-col gap-4;
+  }
+
+  .rp-contribute__preview-header {
+    @apply grid gap-1;
+  }
+
+  .rp-contribute__preview-header p {
+    @apply m-0 text-sm font-bold uppercase tracking-wide text-teal-700;
+  }
+
+  .rp-contribute__preview {
+    @apply min-h-96 flex-1 overflow-auto rounded-2xl bg-slate-950 p-5 text-sm leading-7 text-slate-100;
+    white-space: pre-wrap;
+  }
+
+  .rp-contribute__preview code {
+    @apply font-mono;
+  }
+
+  .rp-contribute__actions {
+    @apply flex flex-col gap-3 sm:flex-row;
+  }
+
+  .rp-contribute__actions .rp-button,
+  .rp-contribute__actions .rp-copy-button {
+    @apply w-full;
+  }
 }
 
 #header.scroll > div:first-child {

@@ -1,6 +1,7 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
+import ContributionWizard from '~/components/ContributionWizard.astro';
 
 const metadata = {
   title: 'Contribute',
@@ -15,28 +16,5 @@ const metadata = {
     subtitle="ReviewPrompt currently prioritizes author-side paper checks, reviewer simulation, and rebuttal prompts."
   />
 
-  <section class="mx-auto max-w-4xl px-4 py-10 md:px-6">
-    <div class="prose prose-slate max-w-none rounded-3xl border border-gray-200 bg-white p-6 shadow-lg shadow-gray-200/50">
-      <h2>What to Submit</h2>
-      <ul>
-        <li>Whether it supports reviewer simulation, multi-pass self-checks, rebuttal briefing, or a nearby author workflow.</li>
-        <li>Whether it should be split into independent checkpoint prompts.</li>
-        <li>The expected input and output.</li>
-        <li>Known limitations and safety concerns.</li>
-        <li>License, source, and contributor attribution.</li>
-      </ul>
-
-      <h2>Submission Path</h2>
-      <p>Use the GitHub Issue Form to submit a prompt.</p>
-
-      <h2>Review Criteria</h2>
-      <ul>
-        <li>Clear task and target user.</li>
-        <li>Evidence-aware output format.</li>
-        <li>No fabricated citations or venue policies.</li>
-        <li>Usable examples or templates.</li>
-        <li>Compatible license.</li>
-      </ul>
-    </div>
-  </section>
+  <ContributionWizard locale="en" />
 </Layout>

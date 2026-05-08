@@ -30,6 +30,8 @@
 
 导航只保留首页、提示词、贡献、关于、语言切换和 GitHub 链接。
 
+贡献页采用站内交互表单：用户选择使用对象、任务和形式，填写适用场景、输入、输出、Prompt 正文、限制和授权信息；页面实时生成投稿 Markdown，并提供复制按钮和预填 GitHub Issue 链接。
+
 ## 内容范围
 
 Prompt 资源必须包含：
@@ -79,6 +81,7 @@ Repository root
 - 使用 Vitest 测试 AstroWind 模板基座是否存在并被首页使用。
 - 使用 `astro check` 验证 Astro 和 TypeScript 类型。
 - 使用 `astro build` 验证 GitHub Pages 静态站点可生成。
+- 使用贡献入口回归测试验证 Markdown 生成、Issue URL 预填、中英文贡献页挂载和 Astro 客户端导航后的重新初始化。
 
 ## 后续迭代
 

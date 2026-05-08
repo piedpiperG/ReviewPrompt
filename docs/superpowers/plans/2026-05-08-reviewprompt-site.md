@@ -13,6 +13,7 @@
 - [x] 工作流只展示 `author_check.txt` 对应的 Prompt 工作流和 Codex / Claude Code 指令。
 - [x] 使用 AstroWind 模板代码库作为 UI 基座。
 - [x] 保留 GitHub Pages 自动部署。
+- [x] 贡献页提供站内交互表单，可实时生成投稿 Markdown 并预填 GitHub Issue。
 
 ## 已完成迁移
 
@@ -34,6 +35,8 @@
 - `site/src/pages/en/index.astro`：英文首页，使用 AstroWind widget。
 - `site/src/pages/prompts/**`：中文提示词列表和详情。
 - `site/src/pages/en/prompts/**`：英文提示词列表和详情。
+- `site/src/components/ContributionWizard.astro`：中英文贡献表单、投稿预览、复制和 GitHub Issue 预填入口。
+- `site/src/lib/contribution.ts`：贡献内容 Markdown 和 Issue URL 生成逻辑。
 - `site/src/data/catalog.ts`：当前提示词数据。
 - `data/my_prompts/*.txt`：当前资源的原始 prompt 来源。
 - `skills/author-paper-check/SKILL.md`：可插入 Codex / Claude Code 的作者论文质检工作流。

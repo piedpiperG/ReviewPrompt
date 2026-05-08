@@ -1,0 +1,301 @@
+---
+import {
+  buildSubmissionIssueUrl,
+  buildSubmissionMarkdown,
+  type ContributionDraft,
+  type ContributionLocale,
+} from '~/lib/contribution';
+
+interface Props {
+  locale: ContributionLocale;
+}
+
+const { locale } = Astro.props;
+
+const content = {
+  zh: {
+    heading: '直接贡献一个提示词',
+    eyebrow: 'Prompt Submission',
+    description: '填写后会生成可复制的投稿内容，并打开已预填的 GitHub Issue。',
+    preview: '投稿预览',
+    openIssue: '打开 GitHub Issue',
+    copy: '复制投稿内容',
+    copied: '已复制',
+    copyFailed: '复制失败',
+    previewFallbackTitle: '未命名提示词',
+    fields: {
+      title: '提示词标题',
+      useCase: '适用场景',
+      input: '输入材料',
+      output: '期望输出',
+      promptText: 'Prompt 正文',
+      limitations: '限制与风险',
+      source: '来源、授权和署名',
+      contributor: '贡献者',
+      role: '使用对象',
+      task: '任务',
+      kind: '形式',
+    },
+    placeholders: {
+      title: '例如：贡献点证据链检查',
+      useCase: '这个 Prompt 适合在什么阶段、帮谁解决什么问题？',
+      input: '例如：完整论文、图表、参考文献、审稿意见。',
+      output: '例如：按风险排序的问题清单、逐条修改建议。',
+      promptText: '粘贴完整 Prompt，保留变量占位符和输出格式要求。',
+      limitations: '说明不能做什么、哪些结果需要人工确认。',
+      source: '原创 / 改编来源 / License / 希望如何署名。',
+      contributor: '名字、GitHub ID 或匿名。',
+    },
+    choices: {
+      role: ['供作者使用', '供审稿人使用'],
+      task: ['完整论文', 'Rebuttal'],
+      kind: ['单条 Prompt', '多步工作流'],
+    },
+  },
+  en: {
+    heading: 'Submit a Prompt',
+    eyebrow: 'Prompt Submission',
+    description: 'Fill the form to generate a copy-ready submission and a prefilled GitHub issue.',
+    preview: 'Submission Preview',
+    openIssue: 'Open GitHub Issue',
+    copy: 'Copy Submission',
+    copied: 'Copied',
+    copyFailed: 'Copy failed',
+    previewFallbackTitle: 'Untitled prompt',
+    fields: {
+      title: 'Prompt Title',
+      useCase: 'Use Case',
+      input: 'Input Materials',
+      output: 'Expected Output',
+      promptText: 'Prompt Text',
+      limitations: 'Limitations and Risks',
+      source: 'Source, License, and Attribution',
+      contributor: 'Contributor',
+      role: 'Intended User',
+      task: 'Task',
+      kind: 'Format',
+    },
+    placeholders: {
+      title: 'Example: contribution evidence-chain audit',
+      useCase: 'When should this prompt be used, by whom, and for what decision?',
+      input: 'Example: full manuscript, figures, bibliography, reviewer comments.',
+      output: 'Example: ranked risk list and concrete revision suggestions.',
+      promptText: 'Paste the full prompt, including placeholders and output-format requirements.',
+      limitations: 'Describe what it cannot do and which results need human verification.',
+      source: 'Original / adapted source / license / preferred attribution.',
+      contributor: 'Name, GitHub ID, or anonymous.',
+    },
+    choices: {
+      role: ['For Authors', 'For Reviewers'],
+      task: ['Full Paper', 'Rebuttal'],
+      kind: ['Single Prompt', 'Multi-step Workflow'],
+    },
+  },
+} as const;
+
+const labels = content[locale];
+const initialDraft: ContributionDraft = {
+  title: '',
+  role: labels.choices.role[0],
+  task: labels.choices.task[0],
+  kind: labels.choices.kind[0],
+  useCase: '',
+  input: '',
+  output: '',
+  promptText: '',
+  limitations: '',
+  source: '',
+  contributor: '',
+};
+const initialMarkdown = buildSubmissionMarkdown(initialDraft, locale);
+const initialIssueUrl = buildSubmissionIssueUrl(initialDraft, locale);
+const textFieldNames = ['title', 'useCase', 'input', 'output', 'promptText', 'limitations', 'source', 'contributor'] as const;
+---
+
+<section
+  class="rp-contribute"
+  data-contribution-wizard
+  data-locale={locale}
+  data-copy-label={labels.copy}
+  data-copied-label={labels.copied}
+  data-copy-failed-label={labels.copyFailed}
+  data-preview-fallback-title={labels.previewFallbackTitle}
+>
+  <div class="rp-contribute__panel rp-contribute__form-panel">
+    <p class="rp-contribute__eyebrow">{labels.eyebrow}</p>
+    <h2>{labels.heading}</h2>
+    <p>{labels.description}</p>
+
+    <form class="rp-contribute__form">
+      <div class="rp-contribute__choice-row">
+        {
+          (['role', 'task', 'kind'] as const).map((field) => (
+            <div class="rp-contribute__choice-group">
+              <label>{labels.fields[field]}</label>
+              <div class="rp-contribute__choices" role="group" aria-label={labels.fields[field]}>
+                {labels.choices[field].map((choice: string, index: number) => (
+                  <button
+                    class="rp-choice-chip"
+                    type="button"
+                    aria-pressed={index === 0 ? 'true' : 'false'}
+                    data-choice-button
+                    data-field={field}
+                    data-value={choice}
+                  >
+                    {choice}
+                  </button>
+                ))}
+              </div>
+              <input data-contribution-field={field} name={field} type="hidden" value={labels.choices[field][0]} />
+            </div>
+          ))
+        }
+      </div>
+
+      {
+        textFieldNames.map((field) => (
+          <label class:list={['rp-contribute__field', field === 'promptText' ? 'wide' : undefined]}>
+            <span>{labels.fields[field]}</span>
+            {field === 'title' || field === 'contributor' ? (
+              <input
+                class="rp-input"
+                data-contribution-field={field}
+                name={field}
+                placeholder={labels.placeholders[field]}
+                type="text"
+              />
+            ) : (
+              <textarea
+                class="rp-textarea"
+                data-contribution-field={field}
+                name={field}
+                placeholder={labels.placeholders[field]}
+                rows={field === 'promptText' ? 10 : 4}
+              />
+            )}
+          </label>
+        ))
+      }
+    </form>
+  </div>
+
+  <aside class="rp-contribute__panel rp-contribute__preview-panel">
+    <div class="rp-contribute__preview-header">
+      <p>{labels.preview}</p>
+      <h2 data-preview-title>{labels.previewFallbackTitle}</h2>
+    </div>
+    <pre class="rp-contribute__preview"><code data-preview-markdown>{initialMarkdown}</code></pre>
+    <div class="rp-contribute__actions">
+      <button
+        class="rp-copy-button secondary"
+        type="button"
+        data-copy-submission
+        data-copy-label={labels.copy}
+        data-copied-label={labels.copied}
+        data-failed-label={labels.copyFailed}
+        data-copy-text={initialMarkdown}
+      >
+        {labels.copy}
+      </button>
+      <a class="rp-button" href={initialIssueUrl} rel="noopener noreferrer" target="_blank" data-issue-link>
+        {labels.openIssue}
+      </a>
+    </div>
+  </aside>
+</section>
+
+<script>
+  import { buildSubmissionIssueUrl, buildSubmissionMarkdown, type ContributionDraft } from '../lib/contribution';
+
+  const boundContributionWizards = new WeakSet<HTMLElement>();
+
+  const getFieldValue = (root: HTMLElement, field: keyof ContributionDraft) => {
+    const input = root.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[data-contribution-field="${field}"]`);
+
+    return input?.value ?? '';
+  };
+
+  const readDraft = (root: HTMLElement): ContributionDraft => ({
+    title: getFieldValue(root, 'title'),
+    role: getFieldValue(root, 'role'),
+    task: getFieldValue(root, 'task'),
+    kind: getFieldValue(root, 'kind'),
+    useCase: getFieldValue(root, 'useCase'),
+    input: getFieldValue(root, 'input'),
+    output: getFieldValue(root, 'output'),
+    promptText: getFieldValue(root, 'promptText'),
+    limitations: getFieldValue(root, 'limitations'),
+    source: getFieldValue(root, 'source'),
+    contributor: getFieldValue(root, 'contributor'),
+  });
+
+  const initContributionWizard = (root: HTMLElement) => {
+    if (boundContributionWizards.has(root)) return;
+    boundContributionWizards.add(root);
+
+    const locale = root.dataset.locale === 'en' ? 'en' : 'zh';
+    const previewTitle = root.querySelector<HTMLElement>('[data-preview-title]');
+    const previewMarkdown = root.querySelector<HTMLElement>('[data-preview-markdown]');
+    const copyButton = root.querySelector<HTMLButtonElement>('[data-copy-submission]');
+    const issueLink = root.querySelector<HTMLAnchorElement>('[data-issue-link]');
+    const choiceButtons = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-choice-button]'));
+
+    const render = () => {
+      const draft = readDraft(root);
+      const markdown = buildSubmissionMarkdown(draft, locale);
+      const title = draft.title.trim() || root.dataset.previewFallbackTitle || '';
+
+      if (previewTitle) previewTitle.textContent = title;
+      if (previewMarkdown) previewMarkdown.textContent = markdown;
+      if (copyButton) copyButton.dataset.copyText = markdown;
+      if (issueLink) issueLink.href = buildSubmissionIssueUrl(draft, locale);
+    };
+
+    root.addEventListener('input', (event) => {
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) render();
+    });
+
+    choiceButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const field = button.dataset.field;
+        const value = button.dataset.value ?? '';
+        if (!field) return;
+
+        const input = root.querySelector<HTMLInputElement>(`[data-contribution-field="${field}"]`);
+        if (input) input.value = value;
+        choiceButtons
+          .filter((candidate) => candidate.dataset.field === field)
+          .forEach((candidate) => candidate.setAttribute('aria-pressed', String(candidate === button)));
+        render();
+      });
+    });
+
+    copyButton?.addEventListener('click', async () => {
+      const label = copyButton.dataset.copyLabel ?? 'Copy';
+      const copiedLabel = copyButton.dataset.copiedLabel ?? 'Copied';
+      const failedLabel = copyButton.dataset.failedLabel ?? 'Copy failed';
+
+      try {
+        await navigator.clipboard.writeText(copyButton.dataset.copyText ?? '');
+        copyButton.textContent = copiedLabel;
+      } catch {
+        copyButton.textContent = failedLabel;
+      }
+
+      window.setTimeout(() => {
+        copyButton.textContent = label;
+      }, 1400);
+    });
+
+    render();
+  };
+
+  const initContributionWizards = () => {
+    document
+      .querySelectorAll<HTMLElement>('[data-contribution-wizard]')
+      .forEach((root) => initContributionWizard(root));
+  };
+
+  initContributionWizards();
+  document.addEventListener('astro:page-load', initContributionWizards);
+</script>

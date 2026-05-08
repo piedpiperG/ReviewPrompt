@@ -11,29 +11,37 @@ body:
     validations:
       required: true
   - type: dropdown
-    id: task
+    id: role
     attributes:
-      label: Primary task
+      label: Intended user
       options:
-        - Full paper review
-        - Methodology critique
-        - Experiment critique
-        - Related work check
-        - Reproducibility check
-        - Rebuttal simulation
-        - Meta-review synthesis
-        - Writing clarity
+        - 供作者使用 / For authors
+        - 供审稿人使用 / For reviewers
     validations:
       required: true
   - type: dropdown
-    id: role
+    id: task
     attributes:
-      label: Intended user role
+      label: Task
       options:
-        - Reviewer
-        - Author
-        - Lab internal reviewer
-        - Area Chair / Meta-reviewer
+        - 完整论文 / Full paper
+        - Rebuttal
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Format
+      options:
+        - 单条 Prompt / Single prompt
+        - 多步工作流 / Multi-step workflow
+    validations:
+      required: true
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case
+      description: Explain when this prompt should be used and what decision it helps with.
     validations:
       required: true
   - type: textarea
@@ -48,6 +56,6 @@ body:
     id: metadata
     attributes:
       label: Input, output, limits, and source
-      description: Describe expected input, output format, known limitations, license, and attribution.
+      description: Describe expected input, output format, known limitations, license, source, and attribution.
     validations:
       required: true
