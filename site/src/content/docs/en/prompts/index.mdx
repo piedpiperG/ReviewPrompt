@@ -1,0 +1,16 @@
+---
+title: Prompt Library
+description: Browse AI-assisted peer-review prompts by task, role, stage, and domain.
+---
+
+import ResourceGrid from '../../../../components/ResourceGrid.astro';
+import { catalog } from '../../../../lib/catalog';
+
+<ResourceGrid
+  description="Prompts are presented as method cards: what they do, when to use them, what input they expect, what output they produce, and where their limits are."
+  resources={catalog.prompts}
+/>
+
+## Library Filters
+
+The first version uses structured metadata for task, role, paper stage, domain, status, and skill readiness. The Task Recommender on the home page uses the same metadata, so the library can grow into a richer filtered catalogue without changing the content model.

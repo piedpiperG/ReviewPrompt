@@ -1,0 +1,26 @@
+---
+title: How to Install Skills
+description: Install ReviewPrompt skills into local agent workflows.
+---
+
+## Codex
+
+Project-level skills can live in `.agents/skills`:
+
+```bash
+mkdir -p .agents/skills
+cp -r skills/full-paper-review .agents/skills/
+```
+
+## Claude Code
+
+Personal skills can live in `~/.claude/skills`:
+
+```bash
+mkdir -p ~/.claude/skills
+cp -r skills/full-paper-review ~/.claude/skills/
+```
+
+## Generic Agent Use
+
+If your tool does not support skills directly, open the relevant `SKILL.md` and reuse the workflow, guardrails, and output format manually.

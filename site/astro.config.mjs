@@ -7,8 +7,22 @@ export default defineConfig({
   trailingSlash: 'always',
   integrations: [
     starlight({
-      title: 'ReviewPrompt',
-      description: 'Open prompts, workflows, and agent skills for AI-assisted peer review.',
+      title: {
+        'zh-CN': 'ReviewPrompt',
+        en: 'ReviewPrompt',
+      },
+      description: '面向 AI 辅助论文审稿的开源 Prompt、Workflow 与 Agent Skill 方法库。',
+      locales: {
+        root: {
+          label: '简体中文',
+          lang: 'zh-CN',
+        },
+        en: {
+          label: 'English',
+          lang: 'en',
+        },
+      },
+      defaultLocale: 'root',
       customCss: ['./src/styles/custom.css'],
       social: [
         {
@@ -19,35 +33,53 @@ export default defineConfig({
       ],
       sidebar: [
         {
-          label: 'Start',
+          label: '开始',
+          translations: { en: 'Start' },
           items: [
-            { label: 'Home', slug: 'index' },
-            { label: 'Review My Paper', slug: 'use-cases/review-my-paper' },
-            { label: 'Improve My Manuscript', slug: 'use-cases/improve-my-manuscript' },
-            { label: 'Install Skills', slug: 'use-cases/install-skills' },
+            { label: '首页', translations: { en: 'Home' }, slug: 'index' },
+            {
+              label: '审一篇论文',
+              translations: { en: 'Review My Paper' },
+              slug: 'use-cases/review-my-paper',
+            },
+            {
+              label: '改进我的论文',
+              translations: { en: 'Improve My Manuscript' },
+              slug: 'use-cases/improve-my-manuscript',
+            },
+            {
+              label: '安装 Skills',
+              translations: { en: 'Install Skills' },
+              slug: 'use-cases/install-skills',
+            },
           ],
         },
         {
-          label: 'Prompts',
+          label: '提示词',
+          translations: { en: 'Prompts' },
           items: [{ autogenerate: { directory: 'prompts' } }],
         },
         {
-          label: 'Workflows',
+          label: '工作流',
+          translations: { en: 'Workflows' },
           items: [{ autogenerate: { directory: 'workflows' } }],
         },
         {
           label: 'Skills',
+          translations: { en: 'Skills' },
           items: [{ autogenerate: { directory: 'skills' } }],
         },
         {
-          label: 'Contribute',
+          label: '贡献',
+          translations: { en: 'Contribute' },
           items: [{ autogenerate: { directory: 'contribute' } }],
         },
         {
-          label: 'Docs',
+          label: '文档',
+          translations: { en: 'Docs' },
           items: [{ autogenerate: { directory: 'docs' } }],
         },
-        { label: 'About', slug: 'about' },
+        { label: '关于', translations: { en: 'About' }, slug: 'about' },
       ],
     }),
   ],

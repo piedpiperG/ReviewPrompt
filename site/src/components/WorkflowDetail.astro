@@ -1,25 +1,30 @@
 ---
 import ResourceGrid from './ResourceGrid.astro';
 import { catalog } from '../lib/catalog';
+import { getLocaleFromPathname, getLocalizedCatalog } from '../lib/localization';
+import { t } from '../lib/ui';
 
 interface Props {
   slug: string;
 }
 
 const { slug } = Astro.props;
-const workflow = catalog.workflows.find((item) => item.slug === slug);
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const labels = t(locale);
+const localizedCatalog = getLocalizedCatalog(catalog, locale);
+const workflow = localizedCatalog.workflows.find((item) => item.slug === slug);
 
 if (!workflow) {
   throw new Error(`Unknown workflow slug: ${slug}`);
 }
 
-const prompts = catalog.prompts.filter((prompt) => workflow.recommendedPrompts.includes(prompt.slug));
-const skills = catalog.skills.filter((skill) => skill.slug === workflow.skillSlug);
+const prompts = localizedCatalog.prompts.filter((prompt) => workflow.recommendedPrompts.includes(prompt.slug));
+const skills = localizedCatalog.skills.filter((skill) => skill.slug === workflow.skillSlug);
 ---
 
 <div class="rp-detail">
   <section class="rp-detail__panel">
-    <h2>Workflow Goal</h2>
+    <h2>{labels.workflowGoal}</h2>
     <p>{workflow.summary}</p>
     <div class="rp-card__meta">
       {[workflow.status, ...workflow.roles, ...workflow.tasks, ...workflow.stages].map((item) => (
@@ -29,17 +34,17 @@ const skills = catalog.skills.filter((skill) => skill.slug === workflow.skillSlu
   </section>
 
   <section class="rp-detail__panel">
-    <h2>Steps</h2>
+    <h2>{labels.steps}</h2>
     <ol class="rp-steps">
       {workflow.steps.map((step) => <li>{step}</li>)}
     </ol>
   </section>
 
   <section class="rp-detail__panel">
-    <h2>Expected Outputs</h2>
+    <h2>{labels.expectedOutputs}</h2>
     <ul>{workflow.outputArtifacts.map((artifact) => <li>{artifact}</li>)}</ul>
   </section>
 
-  <ResourceGrid title="Recommended Prompts" resources={prompts} />
-  {skills.length > 0 && <ResourceGrid title="Available Skill" resources={skills} />}
+  <ResourceGrid title={labels.recommendedPrompts} resources={prompts} />
+  {skills.length > 0 && <ResourceGrid title={labels.availableSkill} resources={skills} />}
 </div>

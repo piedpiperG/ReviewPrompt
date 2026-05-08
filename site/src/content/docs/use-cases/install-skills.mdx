@@ -1,19 +1,19 @@
 ---
-title: Install Skills
-description: Install ReviewPrompt workflows into Codex, Claude Code, or another agent environment.
+title: 安装 Skills
+description: 将 ReviewPrompt 工作流安装到 Codex、Claude Code 或其他 Agent 环境。
 ---
 
 import ResourceGrid from '../../../components/ResourceGrid.astro';
 import { catalog } from '../../../lib/catalog';
 
-## Codex Project-level Install
+## Codex 项目级安装
 
 ```bash
 mkdir -p .agents/skills
 cp -r skills/full-paper-review .agents/skills/
 ```
 
-## Claude Code Personal Install
+## Claude Code 个人安装
 
 ```bash
 mkdir -p ~/.claude/skills
@@ -21,6 +21,6 @@ cp -r skills/full-paper-review ~/.claude/skills/
 ```
 
 <ResourceGrid
-  title="Available Skills"
+  title="可用 Skills"
   resources={catalog.skills}
 />

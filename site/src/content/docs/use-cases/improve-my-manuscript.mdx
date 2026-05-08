@@ -1,19 +1,19 @@
 ---
-title: Improve My Manuscript
-description: Start here when you are preparing your own paper for submission.
+title: 改进我的论文
+description: 当你正在准备投稿自己的论文时，从这里开始。
 ---
 
 import ResourceGrid from '../../../components/ResourceGrid.astro';
 import { catalog } from '../../../lib/catalog';
 
-## Recommended Path
+## 推荐路径
 
-1. Use the Pre-submission Self Review Workflow.
-2. Run Reviewer Attack Simulation to expose likely objections.
-3. Use Methodology Critique and Reproducibility Checklist for evidence gaps.
-4. Turn the output into a revision checklist and prioritize by submission risk.
+1. 使用投稿前自审稿流程。
+2. 运行审稿人攻击点模拟，暴露潜在反对意见。
+3. 使用方法论批评和可复现性检查清单查找证据缺口。
+4. 将输出转化为修改清单，并按投稿风险排序。
 
 <ResourceGrid
-  title="Author Self-review Resources"
+  title="作者自审稿资源"
   resources={catalog.workflows.filter((item) => item.slug === 'pre-submission-self-review').concat(catalog.prompts.filter((item) => ['reviewer-attack-simulation', 'methodology-critique', 'reproducibility-checklist'].includes(item.slug)))}
 />

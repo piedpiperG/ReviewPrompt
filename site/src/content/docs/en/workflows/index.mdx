@@ -1,0 +1,12 @@
+---
+title: Workflow Library
+description: Review workflows that combine prompts, rubrics, checklists, and installable skills.
+---
+
+import ResourceGrid from '../../../../components/ResourceGrid.astro';
+import { catalog } from '../../../../lib/catalog';
+
+<ResourceGrid
+  description="Workflows turn prompt usage into a repeatable process: understand the claim, critique evidence, draft the review, calibrate the score, and produce concrete outputs."
+  resources={catalog.workflows}
+/>

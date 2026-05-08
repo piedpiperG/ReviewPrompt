@@ -1,19 +1,19 @@
 ---
-title: Skill Registry
-description: Installable AI-assisted review skills for Codex, Claude Code, and generic agent workflows.
+title: Skill 注册表
+description: 面向 Codex、Claude Code 和通用 Agent 工作流的可安装 AI 辅助审稿 Skills。
 ---
 
 import ResourceGrid from '../../../components/ResourceGrid.astro';
 import { catalog } from '../../../lib/catalog';
 
 <ResourceGrid
-  description="Skills package high-value review workflows into reusable agent instructions. Each skill includes supported tools, safety level, install command, and a SKILL.md preview."
+  description="Skill 将高价值审稿流程封装成可复用的 Agent 指令。每个 Skill 包含支持工具、安全等级、安装命令和 SKILL.md 预览。"
   resources={catalog.skills}
 />
 
-## Safety Levels
+## 安全等级
 
-- `L0`: Prompt only.
-- `L1`: Prompt and templates, no scripts.
-- `L2`: Prompt plus references and structured assets.
-- `L3`: Script-enabled skill requiring stronger review.
+- `L0`：仅 Prompt。
+- `L1`：Prompt 和模板，无脚本。
+- `L2`：Prompt 加 references 和结构化 assets。
+- `L3`：带脚本的 Skill，需要更严格审查。

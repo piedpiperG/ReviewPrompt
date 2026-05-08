@@ -1,18 +1,18 @@
 ---
 title: AI Review Commons
-description: Open prompts, workflows, and agent skills for AI-assisted peer review.
+description: 面向 AI 辅助论文审稿的开源 Prompt、Workflow 与 Agent Skill 方法库。
 template: splash
 hero:
   title: AI Review Commons
-  tagline: Open prompts, workflows, and agent skills for AI-assisted peer review.
+  tagline: 面向 AI 辅助论文审稿的开源 Prompt、Workflow 与 Agent Skill 方法库。
   actions:
-    - text: Browse Prompts
+    - text: 浏览提示词
       link: /ReviewPrompt/prompts/
       icon: right-arrow
-    - text: Review My Paper
+    - text: 审一篇论文
       link: /ReviewPrompt/use-cases/review-my-paper/
       variant: secondary
-    - text: Submit a Prompt
+    - text: 提交提示词
       link: /ReviewPrompt/contribute/
       variant: minimal
 ---
@@ -26,30 +26,30 @@ export const featured = getFeaturedResources(catalog);
 <TaskRecommender />
 
 <ResourceGrid
-  title="Featured Workflows"
-  description="Start from a task-oriented review process instead of copying an isolated prompt."
+  title="精选工作流"
+  description="从任务导向的审稿流程开始，而不是复制一段孤立提示词。"
   resources={featured.workflows}
 />
 
 <ResourceGrid
-  title="Curated Prompts"
-  description="Each prompt includes use cases, input and output expectations, limits, metadata, and copy actions."
+  title="精选提示词"
+  description="每个提示词都包含适用场景、输入输出预期、限制说明、元数据和复制入口。"
   resources={featured.prompts}
 />
 
 <ResourceGrid
-  title="Skill-ready Resources"
-  description="Install structured review workflows into Codex, Claude Code, or another agent environment."
+  title="Skill-ready 资源"
+  description="将结构化审稿流程安装到 Codex、Claude Code 或其他 Agent 环境。"
   resources={featured.skills}
 />
 
-## Why This Exists
+## 为什么做这个项目
 
-ReviewPrompt turns scattered peer-review prompts into reusable review infrastructure. The first version focuses on structured resources: prompts with metadata, workflows with steps, and installable skills with safety guidance.
+ReviewPrompt 将分散的论文审稿提示词转化为可复用的审稿基础设施。第一版聚焦结构化资源：带元数据的提示词、带步骤的工作流，以及带安全说明的可安装 Skills。
 
-## Trust Model
+## 信任模型
 
-- Open source and versioned in Git.
-- Prompt metadata includes use cases, status, source, license, and limits.
-- Skill pages separate prompt-only resources from installable agent workflows.
-- Safety guidance treats AI output as decision support, not a replacement for human judgment.
+- 开源，并通过 Git 管理版本。
+- 提示词元数据包含适用场景、状态、来源、许可证和限制。
+- Skill 页面区分纯提示词资源和可安装 Agent 工作流。
+- 安全说明明确：AI 输出是决策辅助，不替代人类判断。

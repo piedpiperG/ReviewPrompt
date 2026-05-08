@@ -11,6 +11,7 @@ The source requirement document is [`guide_basement.md`](guide_basement.md). The
 - GitHub Pages + Astro Starlight.
 - Markdown / MDX content pages.
 - Structured Prompt, Workflow, and Skill catalog.
+- Bilingual Chinese / English website, with Chinese as the default locale and English under `/en/`.
 - GitHub Issue Forms for community submissions.
 - GitHub Actions deployment.
 

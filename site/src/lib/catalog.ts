@@ -155,7 +155,7 @@ function scoreResource(
   score += matchValue(resource.tasks, criteria.task) ? 6 : 0;
   score += matchValue(resource.stages, criteria.stage) ? 3 : 0;
   score += matchValue(resource.domains, criteria.domain) ? 2 : 0;
-  score += resource.domains.includes('General') ? 1 : 0;
+  score += resource.domains.includes('General') || resource.domains.includes('通用') ? 1 : 0;
   score += resource.status === 'curated' ? 1 : 0;
   score += resource.featured ? 0.5 : 0;
 

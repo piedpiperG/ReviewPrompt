@@ -1,16 +1,16 @@
 ---
-title: Prompt Library
-description: Browse AI-assisted peer-review prompts by task, role, stage, and domain.
+title: 提示词库
+description: 按任务、角色、阶段和领域浏览 AI 辅助论文审稿提示词。
 ---
 
 import ResourceGrid from '../../../components/ResourceGrid.astro';
 import { catalog } from '../../../lib/catalog';
 
 <ResourceGrid
-  description="Prompts are presented as method cards: what they do, when to use them, what input they expect, what output they produce, and where their limits are."
+  description="提示词会以方法卡形式呈现：它做什么、何时使用、需要什么输入、产生什么输出，以及边界在哪里。"
   resources={catalog.prompts}
 />
 
-## Library Filters
+## 目录筛选
 
-The first version uses structured metadata for task, role, paper stage, domain, status, and skill readiness. The Task Recommender on the home page uses the same metadata, so the library can grow into a richer filtered catalogue without changing the content model.
+第一版使用结构化元数据描述任务、角色、论文阶段、领域、状态和 Skill 就绪情况。首页的任务推荐器也使用同一套元数据，因此后续可以在不改变内容模型的前提下扩展为更完整的筛选目录。
